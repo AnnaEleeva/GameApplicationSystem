@@ -121,4 +121,6 @@ buildNumber.properties
 .mvn/timing.properties
 .mvn/wrapper/maven-wrapper.jar
 
+/${env.BASE_DIR}/
+
 # End of https://www.gitignore.io/api/java,maven,intellij
