@@ -1,11 +1,14 @@
 package com.capgemini.gamecapmates.mapper;
 
 import com.capgemini.gamecapmates.domain.User;
-import com.capgemini.gamecapmates.domain.UserDto;
+import com.capgemini.gamecapmates.dto.UserDto;
+
+import java.time.LocalDate;
+import java.time.Period;
 
 public class UserMapper {
 
-    public User mapToUser(final UserDto userDto) {
+    public User mapDtoToEntity(final UserDto userDto) {
         return User.builder()
                 .id(userDto.getId())
                 .age(userDto.getAge())
@@ -18,7 +21,7 @@ public class UserMapper {
                 .build();
     }
 
-    public UserDto mapToUserDto(final User user) {
+    public UserDto mapEntityToDto(final User user) {
         return UserDto.builder()
                 .id(user.getId())
                 .age(user.getAge())
@@ -30,4 +33,25 @@ public class UserMapper {
                 .level(user.getLevel())
                 .build();
     }
+
+    public UserDto mapUserUpdateToDto(User userUpdate){
+        return UserDto.builder()
+                .firstName(userUpdate.getFirstName())
+                .lastName(userUpdate.getLastName())
+                .email(userUpdate.getEmail())
+                .password(userUpdate.getPassword())
+                .age(calculateAge(userUpdate.getBirthDate(),userUpdate.getCurrentDate()))
+                .motto(userUpdate.getMotto())
+                .build();
+
+    }
+
+    public static int calculateAge(LocalDate birthDate, LocalDate currentDate) {
+        if ((birthDate != null) && (currentDate != null)) {
+            return Period.between(birthDate, currentDate).getYears();
+        } else {
+            return 0;
+        }
+    }
 }
+

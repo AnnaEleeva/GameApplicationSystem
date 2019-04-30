@@ -1,16 +1,13 @@
-package com.capgemini.gamecapmates.domain;
+package com.capgemini.gamecapmates.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import com.capgemini.gamecapmates.domain.Level;
+import lombok.*;
 
 @AllArgsConstructor
-@Getter
-@Setter
+@Data
 @Builder
 public class UserDto {
-    private long id;
+    private Long id;
     private int age;
     private String firstName;
     private String lastName;
