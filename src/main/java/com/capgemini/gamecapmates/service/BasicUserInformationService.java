@@ -2,16 +2,14 @@ package com.capgemini.gamecapmates.service;
 
 import com.capgemini.gamecapmates.domain.User;
 import com.capgemini.gamecapmates.dto.UserDto;
-import com.capgemini.gamecapmates.dao.MainDao;
+import com.capgemini.gamecapmates.dto.UserUpdateDto;
+import com.capgemini.gamecapmates.mapper.UserMapper;
 import com.capgemini.gamecapmates.repository.UserRepository;
 
-import java.util.List;
-import java.util.Map;
 
-public class BasicUserInformationService extends MainDao<User> {
-// MA działac na DTO
-
-    List<User> user_list;
+public class BasicUserInformationService {
+    // dane beda rozszerone o id
+    // usera mozna zobaczyc i zapdejtowac i usuwac gry !!!!!!!!
 
     private UserRepository userRepository;
 
@@ -19,13 +17,16 @@ public class BasicUserInformationService extends MainDao<User> {
         this.userRepository=userRepository;
     }
 
-    @Override
-    public Map findAll() {
-        return null;
+    public UserDto updateUserBasicInformation(final UserUpdateDto userUpdate) {
+        UserMapper userMapper= new UserMapper();
+        User user = userMapper.mapUserUpdateToDto(userUpdate);
+
+       User user1= userRepository.save(user);
+
+        return userMapper.mapEntityToDto(user1);
     }
 
 
-    public UserDto updateUserBasicInformation(final UserDto userDto) {
-        return null;
-    }
+    // nie przejmowac sie dodawaniem uzytkownika !!!!!!!!!
+    //metoda pobieranie listy uzytkownikow
 }

@@ -7,6 +7,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Data
 @Builder
+@EqualsAndHashCode
 public class GameDto {
     private Long id;
     private String name;

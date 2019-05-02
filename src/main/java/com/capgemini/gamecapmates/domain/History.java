@@ -5,14 +5,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.Optional;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode
-public class GameBoard {
-    private Long id;
-    private Optional<Game> gameBoard;
-    private Optional<User> userBoard;
+public class History {
+    public Long id;
+    private LocalDate date;
+    private String action;
+    private String details;
+    private Double rating;
 }

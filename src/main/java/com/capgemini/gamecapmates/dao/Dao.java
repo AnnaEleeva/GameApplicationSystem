@@ -1,13 +1,13 @@
 package com.capgemini.gamecapmates.dao;
 
-import java.util.Map;
+
+import java.util.List;
 import java.util.Optional;
 
 public interface Dao <T> {
+    List<T> findAll();
 
-    Map<Integer,T> findAll();
-
-    void save(Integer key,T t);
+    T save(T t);
 
     Optional<T> findById(Long id);
 

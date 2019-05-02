@@ -1,19 +1,22 @@
 package com.capgemini.gamecapmates.dto;
 
-import com.capgemini.gamecapmates.domain.Level;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @Data
 @Builder
 @EqualsAndHashCode
-public class UserDto {
+public class UserUpdateDto {
     private Long id;
-    private int age;
     private String firstName;
     private String lastName;
     private String email;
     private String password;
+    private LocalDate birthDate;
     private String motto;
-    private Level level;
 }
