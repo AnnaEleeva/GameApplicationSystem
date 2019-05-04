@@ -286,7 +286,7 @@
               -quiet
               -federate JDK http://docs.oracle.com/javase/6/docs/api/index.html?
               -federationxml JDK http://doclava.googlecode.com/svn/static/api/openjdk-6.xml
-              -federate Guice http://google-guice.googlecode.com/git-history/3.0/javadoc
+              -federate Guice http://google-guice.googlecode.com/git-gamesHistory/3.0/javadoc
               -hdf project.name "${project.name}"
               -overview ${basedir}/overview.html
               -templatedir ${basedir}/../doclava

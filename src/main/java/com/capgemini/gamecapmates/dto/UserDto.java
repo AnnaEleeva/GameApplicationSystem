@@ -1,6 +1,5 @@
 package com.capgemini.gamecapmates.dto;
 
-import com.capgemini.gamecapmates.domain.Level;
 import lombok.*;
 
 @AllArgsConstructor
@@ -15,5 +14,4 @@ public class UserDto {
     private String email;
     private String password;
     private String motto;
-    private Level level;
 }

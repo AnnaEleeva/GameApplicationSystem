@@ -1,6 +1,8 @@
 package com.capgemini.gamecapmates.dao;
 
 
+import com.capgemini.gamecapmates.Exceptions.NoSuchUserException;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -9,8 +11,8 @@ public interface Dao <T> {
 
     T save(T t);
 
-    Optional<T> findById(Long id);
+    Optional<T> findById(Long id) throws NoSuchUserException;
 
-    void deleteById(T t);
+    void remove(T t);
 
 }

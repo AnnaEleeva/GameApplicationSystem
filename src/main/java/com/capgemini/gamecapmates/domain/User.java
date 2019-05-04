@@ -2,6 +2,7 @@ package com.capgemini.gamecapmates.domain;
 
 import lombok.*;
 
+
 @AllArgsConstructor
 @Data
 @Builder
@@ -14,6 +15,4 @@ public class User{
     private String email;
     private String password;
     private String motto;
-    private Level level;
-
 }

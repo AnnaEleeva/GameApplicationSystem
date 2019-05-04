@@ -5,13 +5,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.Optional;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode
-public class GameBoard {
-    private Optional<Game> gameBoard;
-    private Optional<User> userBoard;
+public class PreviousGames {
+    private Long idGame;
+    private List<Long> idPlayers;
+    private Boolean isWinner;
 }

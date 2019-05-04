@@ -9,10 +9,10 @@ import java.time.LocalDate;
 @Builder
 @EqualsAndHashCode
 public class GameDto {
-    private Long id;
+    public Long id;
     private String name;
     private LocalDate year_of_publishment; //calendar
-    private int number_of_players1;
-    private int number_of_players2;
+    private int minNumberOfPlayers;
+    private int maxNumberOfplayers;
     private String description;
 }

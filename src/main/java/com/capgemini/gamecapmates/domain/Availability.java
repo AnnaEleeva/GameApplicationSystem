@@ -5,16 +5,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode
-public class History {
-    public Long id;
-    private LocalDate date;
-    private String action;
-    private String details;
-    private Double rating;
+public class Availability {
+
+    private LocalDateTime dateFrom;
+    private LocalDateTime dateTo;
+    private Disponibility disponibility;
+    private String information;
 }

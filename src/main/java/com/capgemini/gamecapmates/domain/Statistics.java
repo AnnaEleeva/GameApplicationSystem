@@ -5,13 +5,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.Optional;
-
 @Data
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode
-public class GameBoard {
-    private Optional<Game> gameBoard;
-    private Optional<User> userBoard;
+public class Statistics {
+    private Long rankingPosition;
+    private Level level;
 }

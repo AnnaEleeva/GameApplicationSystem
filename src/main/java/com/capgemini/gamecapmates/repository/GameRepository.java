@@ -1,7 +1,9 @@
 package com.capgemini.gamecapmates.repository;
 
+import com.capgemini.gamecapmates.Exceptions.NoSuchUserException;
 import com.capgemini.gamecapmates.dao.Dao;
 import com.capgemini.gamecapmates.domain.Game;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -9,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
+@Repository
 public class GameRepository implements Dao<Game> {
     private Long id = 0L;
     private List<Game> gameList;
@@ -43,17 +46,18 @@ public class GameRepository implements Dao<Game> {
     }
 
     @Override
-    public Optional<Game> findById(Long id) { // validate
-        return gameList.stream()
-                .filter(game -> game.getId().equals(id))
-                .findFirst();
+    public Optional<Game> findById(Long id) throws NoSuchUserException { // validate
+        if(id!=null) {
+            return gameList.stream()
+                    .filter(game -> game.getId().equals(id))
+                    .findAny();
+        } throw new NoSuchUserException();
     }
 
     @Override
-    public void deleteById(Game game) {
+    public void remove(Game game) {
         Predicate<Game> condition= user1 -> user1.equals(game);
         gameList.removeIf(condition);
         System.out.println(gameList);
     }
-    //hasGame()
 }
