@@ -14,5 +14,5 @@ import java.util.List;
 public class PreviousGames {
     private Long idGame;
     private List<Long> idPlayers;
-    private Boolean isWinner;
+    private Boolean gameResult;
 }

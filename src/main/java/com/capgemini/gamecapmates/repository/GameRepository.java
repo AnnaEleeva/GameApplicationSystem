@@ -1,7 +1,7 @@
 package com.capgemini.gamecapmates.repository;
 
-import com.capgemini.gamecapmates.Exceptions.NoSuchUserException;
-import com.capgemini.gamecapmates.dao.Dao;
+import com.capgemini.gamecapmates.Exceptions.NoSuchGameException;
+import com.capgemini.gamecapmates.dao.GameDao;
 import com.capgemini.gamecapmates.domain.Game;
 import org.springframework.stereotype.Repository;
 
@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 @Repository
-public class GameRepository implements Dao<Game> {
+public class GameRepository implements GameDao<Game> {
     private Long id = 0L;
     private List<Game> gameList;
 
@@ -32,12 +32,12 @@ public class GameRepository implements Dao<Game> {
     }
 
     @Override
-    public Game save(Game game) {
+    public Optional<Game> save(Game game) {
         if (game != null) {
             game.id = getNextId();
             gameList.add(game);
 
-            return game;
+            return Optional.of(game);
         }
         return null;
     }
@@ -46,12 +46,21 @@ public class GameRepository implements Dao<Game> {
     }
 
     @Override
-    public Optional<Game> findById(Long id) throws NoSuchUserException { // validate
+    public Optional<Game> findById(Long id) throws NoSuchGameException { // validate
         if(id!=null) {
             return gameList.stream()
                     .filter(game -> game.getId().equals(id))
                     .findAny();
-        } throw new NoSuchUserException();
+        } throw new NoSuchGameException();
+    }
+
+    @Override
+    public Optional<Game> findByName(String name) throws NoSuchGameException{
+        if(name!= null){
+            return gameList.stream()
+                    .filter(game -> game.getName().equals(name))
+                    .findAny();
+        } throw new NoSuchGameException();
     }
 
     @Override

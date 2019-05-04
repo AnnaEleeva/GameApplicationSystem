@@ -4,6 +4,9 @@ import com.capgemini.gamecapmates.domain.Game;
 import com.capgemini.gamecapmates.dto.GameDto;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class GameMapper {
 
@@ -18,7 +21,7 @@ public class GameMapper {
                 .build();
     }
 
-    public GameDto mapEntityToDto(Game game){
+    public GameDto mapEntityToDto(Game game) {
         return GameDto.builder()
                 .id(game.getId())
                 .name(game.getName())
@@ -27,5 +30,18 @@ public class GameMapper {
                 .maxNumberOfplayers(game.getMaxNumberOfplayers())
                 .description(game.getDescription())
                 .build();
+    }
+
+
+    public List<GameDto> mapListToDto(List<Game> games) {
+        return games.stream()
+                .map(game -> new GameDto(
+                        game.getId(),
+                        game.getName(),
+                        game.getYear_of_publishment(),
+                        game.getMinNumberOfPlayers(),
+                        game.getMaxNumberOfplayers(),
+                        game.getDescription()
+                )).collect(Collectors.toList());
     }
 }

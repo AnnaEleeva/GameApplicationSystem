@@ -36,8 +36,17 @@ public class BasicUserInformationService {
         return userMapper.mapEntityToDto(user_Id);
     }
 
-    public StatisticsDto getUserStatistics(Long id){
+    public StatisticsDto getUserStatistics(Long id){ // liczba wygranych, przegranych zremisowanych
        return null;
+    }
+
+    public StatisticsDto getPositionInRanking(Long id){
+        return null;
+    }
+
+    public StatisticsDto getUserLevel(){
+        return null;
+        // calculate Level
     }
 
     public List<UserDto> findAllUser() {

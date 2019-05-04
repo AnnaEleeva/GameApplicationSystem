@@ -38,7 +38,6 @@ public class GameCapMatesBoardApplicationTests {
 
 	@Test
 	public void GameBoardrepotest() {
-
 		try {
 			GameBoardRepository gameBoardRepository = new GameBoardRepository(gameRepository,userRepository);
 			List<Game> userId=gameBoardRepository.findById(1L);
