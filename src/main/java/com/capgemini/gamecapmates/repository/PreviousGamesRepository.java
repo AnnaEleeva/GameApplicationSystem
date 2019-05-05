@@ -1,6 +1,6 @@
 package com.capgemini.gamecapmates.repository;
 
-import com.capgemini.gamecapmates.Exceptions.NoSuchUserException;
+
 import com.capgemini.gamecapmates.dao.Dao;
 import com.capgemini.gamecapmates.domain.PreviousGames;
 
@@ -9,25 +9,29 @@ import java.util.List;
 
 public class PreviousGamesRepository implements Dao<PreviousGames> {
 
-    List<PreviousGames> previousGamesList;
+    private List<PreviousGames> previousGamesList;
 
     public PreviousGamesRepository(){
         previousGamesList= new ArrayList<>();
-
     }
     @Override
     public List<PreviousGames> findAll() {
-        return null;
+        return previousGamesList;
     }
 
     @Override
-    public PreviousGames save(PreviousGames previousGames) {
-        return null;
+    public PreviousGames add(PreviousGames previousGames) {
+        if (previousGames != null) {
+            previousGamesList.add(previousGames);
+
+            return previousGames;
+        }
+        throw new IllegalArgumentException();
     }
 
     @Override
-    public PreviousGames findById(Long id) throws NoSuchUserException {
-        return null;
+    public PreviousGames findById(Long id) {
+      return null;
     }
 
     @Override

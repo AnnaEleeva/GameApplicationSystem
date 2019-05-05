@@ -1,7 +1,7 @@
 package com.capgemini.gamecapmates.repository;
 
 import com.capgemini.gamecapmates.Exceptions.NoSuchGameException;
-import com.capgemini.gamecapmates.dao.GameDao;
+import com.capgemini.gamecapmates.dao.Dao;
 import com.capgemini.gamecapmates.domain.Game;
 import org.springframework.stereotype.Repository;
 
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 @Repository
-public class GameRepository implements GameDao<Game> {
+public class GameRepository implements Dao<Game> {
     private List<Game> gameList;
 
     public GameRepository(){
@@ -32,9 +32,9 @@ public class GameRepository implements GameDao<Game> {
     @Override
     public Game add(Game game)  {
         if (game != null) {
-        gameList.add(game);
+            gameList.add(game);
 
-        return game;
+            return game;
         }
         throw new IllegalArgumentException();
     }

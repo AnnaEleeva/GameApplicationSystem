@@ -1,5 +1,6 @@
 package com.capgemini.gamecapmates.dto;
 
+import com.capgemini.gamecapmates.domain.GameResult;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +13,7 @@ import java.util.List;
 @Builder
 @EqualsAndHashCode
 public class PreviousGamesDto {
+    private Long idUser;
     private Long idGame;
-    private List<Long> idPlayers;
-    private Boolean isWinner;
+    private GameResult gameResult;
 }

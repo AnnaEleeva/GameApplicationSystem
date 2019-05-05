@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class GameMapper {
+public final class GameMapper {
 
     public Game mapDtoToEntity (GameDto gameDto){
         return Game.builder()

@@ -7,14 +7,20 @@ import com.capgemini.gamecapmates.repository.UserRepository;
 import com.capgemini.gamecapmates.service.BasicUserInformationService;
 import com.capgemini.gamecapmates.service.BoardGamesService;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class AppConfig {
+@ComponentScan("com.capgemini.gamecapmates.GameCapMatesBoardApplication")
+public class AppConfig { //!!!!
 
     @Bean
-    BasicUserInformationService userService(UserRepository userRepository, UserMapper userMapper) {
+    BasicUserInformationService userService( UserRepository userRepository,UserMapper userMapper) {
         return new BasicUserInformationService(userRepository, userMapper);
+    }
+    @Bean
+    GameRepository gameRepository(){
+        return new GameRepository();
     }
 
     @Bean

@@ -9,7 +9,9 @@ import lombok.EqualsAndHashCode;
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode
-public class Statistics {
-    private Long rankingPosition;
+class Statistics {
     private Level level;
+    private long gameWin;
+    private long gameLose;
+    private long gameDraw;
 }

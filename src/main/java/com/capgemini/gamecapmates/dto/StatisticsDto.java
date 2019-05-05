@@ -11,6 +11,8 @@ import lombok.EqualsAndHashCode;
 @Builder
 @EqualsAndHashCode
 public class StatisticsDto {
-    private Long rankingPosition;
     private Level level;
+    private long gameWin;
+    private long gameLose;
+    private long gameDraw;
 }

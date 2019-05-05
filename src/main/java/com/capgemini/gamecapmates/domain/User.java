@@ -17,8 +17,11 @@ public class User{
     private String email;
     private String password;
     private String motto;
+    private Statistics statistics;
+    private RankingPosition rankingPosition;
 
     private List<Game> userGames;
     private List<PreviousGames> userPreviousGames;
+    private List<GamesHistory> userGamesHistory;
     private List<Availability> userTimeAvailability;
 }

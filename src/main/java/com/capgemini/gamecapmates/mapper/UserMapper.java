@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class UserMapper {
+public final class UserMapper {
 
 
     public User mapDtoToEntity(final UserDto userDto) throws NoSuchUserException {

@@ -9,6 +9,7 @@ import com.capgemini.gamecapmates.mapper.GameMapper;
 import com.capgemini.gamecapmates.repository.GameRepository;
 import com.capgemini.gamecapmates.repository.UserRepository;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,9 +20,10 @@ public class BoardGamesService {
     private static final Logger logger = Logger.getLogger(BoardGamesService.class);
 
     private GameMapper gameMapper;
-   private GameRepository gameRepository;
+    private GameRepository gameRepository;
     private UserRepository userRepository;
 
+    @Autowired
     public BoardGamesService(GameMapper gameMapper, GameRepository gameRepository, UserRepository userRepository) {
         this.gameMapper = gameMapper;
         this.gameRepository = gameRepository;
@@ -68,7 +70,7 @@ public class BoardGamesService {
         }
     }
 
-    public void addGameThatIsNotExistsToUser(Long userId, GameDto gameDto) throws NoSuchGameException {
+    public void addGameThatIsNotExists(Long userId, GameDto gameDto) throws NoSuchGameException {
         if (!gameRepository.findAll().contains(gameDto)) {
             Game newGame = gameMapper.mapDtoToEntity(gameDto);
             gameRepository.add(newGame);

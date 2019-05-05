@@ -5,7 +5,7 @@ import com.capgemini.gamecapmates.dto.GamesHistoryDto;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PreviousGamesMapper {
+public final class HistoryGameMapper {
 
     public GamesHistoryDto mapToHistoryDto(GamesHistory gamesHistory){
         return GamesHistoryDto.builder()
