@@ -77,7 +77,10 @@ public class UserMapper {
                         user.getLastName(),
                         user.getEmail(),
                         user.getPassword(),
-                        user.getMotto()
+                        user.getMotto(),
+                        user.getUserGames(),
+                        user.getUserPreviousGames(),
+                        user.getUserTimeAvailability()
                 )).collect(Collectors.toList());
     }
 }

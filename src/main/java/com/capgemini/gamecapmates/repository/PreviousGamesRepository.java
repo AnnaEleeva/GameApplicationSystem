@@ -6,7 +6,6 @@ import com.capgemini.gamecapmates.domain.PreviousGames;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class PreviousGamesRepository implements Dao<PreviousGames> {
 
@@ -27,8 +26,8 @@ public class PreviousGamesRepository implements Dao<PreviousGames> {
     }
 
     @Override
-    public Optional<PreviousGames> findById(Long id) throws NoSuchUserException {
-        return Optional.empty();
+    public PreviousGames findById(Long id) throws NoSuchUserException {
+        return null;
     }
 
     @Override

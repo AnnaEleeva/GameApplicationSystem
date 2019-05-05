@@ -31,7 +31,7 @@ public class BasicUserInformationService {
     }
 
     public UserDto findUserById(Long user_id) throws NoSuchUserException {
-        User user_Id = userRepository.findById(user_id).orElse(null);
+        User user_Id = userRepository.findById(user_id);
 
         return userMapper.mapEntityToDto(user_Id);
     }
@@ -54,7 +54,7 @@ public class BasicUserInformationService {
 
         return userMapper.mapListToDto(users);
     }
-    // dont need to add user
+
 
     public void removeUser(UserDto userDto){}
 

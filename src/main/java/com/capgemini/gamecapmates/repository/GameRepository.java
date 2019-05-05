@@ -8,12 +8,10 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Predicate;
 
 @Repository
 public class GameRepository implements GameDao<Game> {
-    private Long id = 0L;
     private List<Game> gameList;
 
     public GameRepository(){
@@ -32,34 +30,21 @@ public class GameRepository implements GameDao<Game> {
     }
 
     @Override
-    public Optional<Game> save(Game game) {
+    public Game add(Game game)  {
         if (game != null) {
-            game.id = getNextId();
-            gameList.add(game);
+        gameList.add(game);
 
-            return Optional.of(game);
+        return game;
         }
-        return null;
-    }
-    private Long getNextId() {
-        return ++id;
+        throw new IllegalArgumentException();
     }
 
     @Override
-    public Optional<Game> findById(Long id) throws NoSuchGameException { // validate
+    public Game findById(Long id) throws NoSuchGameException { // validate
         if(id!=null) {
             return gameList.stream()
                     .filter(game -> game.getId().equals(id))
-                    .findAny();
-        } throw new NoSuchGameException();
-    }
-
-    @Override
-    public Optional<Game> findByName(String name) throws NoSuchGameException{
-        if(name!= null){
-            return gameList.stream()
-                    .filter(game -> game.getName().equals(name))
-                    .findAny();
+                    .findAny().orElse(null);
         } throw new NoSuchGameException();
     }
 

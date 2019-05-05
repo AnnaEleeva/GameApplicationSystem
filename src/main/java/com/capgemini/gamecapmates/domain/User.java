@@ -2,6 +2,8 @@ package com.capgemini.gamecapmates.domain;
 
 import lombok.*;
 
+import java.util.List;
+
 
 @AllArgsConstructor
 @Data
@@ -15,4 +17,8 @@ public class User{
     private String email;
     private String password;
     private String motto;
+
+    private List<Game> userGames;
+    private List<PreviousGames> userPreviousGames;
+    private List<Availability> userTimeAvailability;
 }

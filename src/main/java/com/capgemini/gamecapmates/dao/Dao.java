@@ -11,7 +11,7 @@ public interface Dao <T> {
 
     T save(T t);
 
-    Optional<T> findById(Long id) throws NoSuchUserException;
+    T findById(Long id) throws NoSuchUserException;
 
     void remove(T t);
 

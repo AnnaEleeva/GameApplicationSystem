@@ -12,6 +12,6 @@ import java.util.Optional;
 @Builder
 @EqualsAndHashCode
 public class GameBoard {
-    private Optional<Game> gameBoard;
-    private Optional<User> userBoard;
+    private Game gameBoard;
+    private User userBoard;
 }

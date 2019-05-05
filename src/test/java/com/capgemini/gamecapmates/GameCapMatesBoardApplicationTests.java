@@ -21,31 +21,4 @@ import java.util.List;
 @SpringBootTest (classes = GameCapMatesBoardApplication.class)
 public class GameCapMatesBoardApplicationTests {
 
-	@Autowired
-	GameRepository gameRepository;
-	@Autowired
-	UserRepository userRepository;
-
-	@Test
-	public void checkingCalculateAge() {
-		UserMapper userMapper = new UserMapper();
-
-		int age = userMapper.calculateAge(LocalDate.of(1995, 7, 10));
-
-		Assert.assertEquals(23, age);
-
-	}
-
-	@Test
-	public void GameBoardrepotest() {
-		try {
-			GameBoardRepository gameBoardRepository = new GameBoardRepository(gameRepository,userRepository);
-			List<Game> userId=gameBoardRepository.findById(1L);
-			System.out.println(userId);
-		} catch (NoSuchUserException e) {
-			e.printStackTrace();
-		}
-	}
-
-
 }

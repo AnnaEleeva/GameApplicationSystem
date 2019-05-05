@@ -6,15 +6,13 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 @Data
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode
 public class GamesHistory {
-    private Long id;
-    private Optional<User> userId;
+    private Long userId;
     private LocalDate date;
     private String action;
     private String details;

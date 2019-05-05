@@ -7,13 +7,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.Optional;
-
 @Data
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode
 public class GameBoardDto {
-    private Optional<Game> gameBoard;
-    private Optional<User> userBoard;
+    private Game gameBoard;
+    private User userBoard;
+
 }

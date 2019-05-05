@@ -10,30 +10,23 @@ import java.util.function.Predicate;
 
 @Repository
 public class UserRepository implements Dao<User> {
-    private Long id = 0L;
     private List< User> userList;
 
     public UserRepository() {
         userList = new ArrayList<>();
 
-        userList.add(new User(1L,1 , "Jan", "Kowalski", "Jan_Kowalski@gmail.com", "1234", "This is sparta"));
-        userList.add(new User(2L,1 ,"Marcin", "Nowak", "Marcin1@gmail.com", "Nowak1", "To the death!"));
-        userList.add(new User(3L, 2, "Adam", "Bak", "Adas2@onet.pl", "Bak1", "Dont die"));
+      //  userList.add(new User(1L,1 , "Jan", "Kowalski", "Jan_Kowalski@gmail.com", "1234", "This is sparta"));
+       // userList.add(new User(2L,1 ,"Marcin", "Nowak", "Marcin1@gmail.com", "Nowak1", "To the death!"));
+       // userList.add(new User(3L, 2, "Adam", "Bak", "Adas2@onet.pl", "Bak1", "Dont die"));
     }
 
     @Override
-    public User save(User user) { // validation
+    public User save(User user) {
         if (user != null && !userList.contains(user)) {
-            user.id = getNextId();
             userList.add(user);
-
             return user;
         }
         return null;
-    }
-
-    private Long getNextId() {
-        return ++id;
     }
 
     @Override
@@ -43,11 +36,11 @@ public class UserRepository implements Dao<User> {
 
 
     @Override
-    public Optional<User> findById(Long id) throws NoSuchUserException { // validate
+    public User findById(Long id) throws NoSuchUserException { // validate
         if(id!=null){
       return userList.stream()
                 .filter(user -> user.getId().equals(id))
-                .findAny();}
+                .findAny().orElse(null);}
         throw new NoSuchUserException();
     }
 
@@ -57,5 +50,4 @@ public class UserRepository implements Dao<User> {
         userList.removeIf(condition);
         System.out.println(userList);
     }
-    // zaimplementowac potrzebna metody w repozytorium z dao zeby z bazy danych wywolywac rekordy !! encje !!!!
 }
