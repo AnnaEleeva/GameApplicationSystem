@@ -60,6 +60,19 @@ public class UserMapper {
 
     }
 
+    public UserDto mapUserUpdateToDto(UserUpdateDto userUpdateDto){
+        return UserDto.builder()
+                .id(userUpdateDto.getId())
+                .age(calculateAge(userUpdateDto.getBirthDate()))
+                .firstName(userUpdateDto.getFirstName())
+                .lastName(userUpdateDto.getLastName())
+                .email(userUpdateDto.getEmail())
+                .password(userUpdateDto.getPassword())
+                .motto(userUpdateDto.getMotto())
+                .build();
+    }
+
+
     private int calculateAge(LocalDate birthDate) {
         if ((birthDate != null)) {
             return Period.between(birthDate, LocalDate.now()).getYears();

@@ -85,5 +85,10 @@ public class GamesHistoryRepository implements Dao<GamesHistory> {
         gamesHistoryList.removeIf(condition);
     }
 
+    @Override
+    public GamesHistory edit(GamesHistory gamesHistory) {
+        return null;
+    }
+
 }
 

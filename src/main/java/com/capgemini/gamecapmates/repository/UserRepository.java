@@ -18,6 +18,7 @@ public class UserRepository implements Dao<User> {
 
         userList.add(User.builder()
                 .id(1L)
+                .age(28)
                 .firstName("Jan")
                 .lastName("Kowalski")
                 .email("Jan_Kowalski@gmail.com")
@@ -29,6 +30,7 @@ public class UserRepository implements Dao<User> {
                 .build());
         userList.add(User.builder()
                 .id(2L)
+                .age(25)
                 .firstName("Marcin")
                 .lastName("Nowak")
                 .email("Marcin1@gmail.com")
@@ -40,6 +42,7 @@ public class UserRepository implements Dao<User> {
                 .build());
         userList.add(User.builder()
                 .id(3L)
+                .age(25)
                 .firstName("Adam")
                 .lastName("Bak")
                 .email("Adas2@onet.pl")
@@ -68,17 +71,36 @@ public class UserRepository implements Dao<User> {
 
     @Override
     public User findById(Long id) throws NoSuchUserException {
-        if(id!=null){
-      return userList.stream()
-                .filter(user -> user.getId().equals(id))
-                .findAny().orElse(null);}
+        if (id != null) {
+            return userList.stream()
+                    .filter(user -> user.getId().equals(id))
+                    .findAny().orElse(null);
+        }
         throw new NoSuchUserException();
     }
 
     @Override
     public void remove(User user) {
-        Predicate<User> condition= user1 -> user1.equals(user);
+        Predicate<User> condition = user1 -> user1.equals(user);
         userList.removeIf(condition);
         System.out.println(userList);
+    }
+
+    @Override
+    public User edit(User user) throws NoSuchUserException {
+        if (user.getId() <= userList.size()) {
+            int index = getIndex(user.getId());
+            userList.add(index, user);
+            return user;
+        }
+        throw new NoSuchUserException();
+    }
+
+    private int getIndex(Long id) {
+        User user = userList.stream()
+                .filter(user1 -> user1.getId().equals(id))
+                .findAny().orElse(null);
+
+        return userList.indexOf(user);
     }
 }

@@ -16,5 +16,6 @@ public interface Dao <T> {
 
     void remove(T t);
 
+    T edit(T t) throws NoSuchUserException;
 
 }

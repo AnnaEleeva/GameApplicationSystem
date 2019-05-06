@@ -1,6 +1,7 @@
-package com.capgemini.gamecapmates.service;
+package com.capgemini.gamecapmates.unitTests.mapper.service;
 
 import com.capgemini.gamecapmates.GameCapMatesBoardApplication;
+import com.capgemini.gamecapmates.service.BoardGamesService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

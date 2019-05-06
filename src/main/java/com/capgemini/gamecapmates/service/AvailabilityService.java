@@ -34,7 +34,22 @@ public class AvailabilityService {
         userAvailability.remove(availabilityId);
     }
 
-    public AvailabilityDto editAvailabilityHours() { // edit with comments
-        return null;
+    public AvailabilityDto editAvailabilityHours(AvailabilityDto availabilityDto, Long userId) throws NoSuchUserException { // edit with comments
+        if (availabilityDto != null) {
+            Availability availability = availabilityMapper.mapDtoToEntity(availabilityDto);
+            Availability updatedAvailability = availabilityRepository.edit(availability);
+
+            List<Long> av = userRepository.findById(userId).getUserAvailabilityHours();
+            Long updatedAvailabilityId = updatedAvailability.getId();
+            for (Long id : av) {
+                if (id.equals(updatedAvailabilityId)) {
+                    removeAvailabilityHours(userId, id);
+                    addAvailabilityHours(availabilityDto, userId);
+                }
+            }
+            return availabilityMapper.mapEntityToDto(updatedAvailability);
+        } else {
+            throw new NoSuchUserException();
+        }
     }
 }

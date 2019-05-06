@@ -1,8 +1,10 @@
 package com.capgemini.gamecapmates.repository;
 
+import com.capgemini.gamecapmates.Exceptions.NoSuchUserException;
 import com.capgemini.gamecapmates.dao.Dao;
 import com.capgemini.gamecapmates.domain.Availability;
 import com.capgemini.gamecapmates.enums.Disponibility;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -11,6 +13,7 @@ import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+@Repository
 public class AvailabilityRepository implements Dao<Availability> {
 
     private List<Availability> availabilityList;
@@ -53,21 +56,41 @@ public class AvailabilityRepository implements Dao<Availability> {
         if (availability != null) {
             availabilityList.add(availability);
             return availability;
-        } throw new IllegalArgumentException();
+        }
+        throw new IllegalArgumentException();
     }
 
     @Override
     public Availability findById(Long id) {
-        if(id!=null) {
+        if (id != null) {
             return availabilityList.stream()
                     .filter(availability -> availability.getId().equals(id))
                     .findAny().orElse(null);
-        } throw new IllegalArgumentException();
+        }
+        throw new IllegalArgumentException();
     }
 
     @Override
     public void remove(Availability availability) {
-        Predicate<Availability> condition= user1 -> user1.equals(availability);
+        Predicate<Availability> condition = user1 -> user1.equals(availability);
         availabilityList.removeIf(condition);
+    }
+
+    @Override
+    public Availability edit(Availability availability) throws NoSuchUserException {
+        if (availability.getId() <= availabilityList.size()) {
+            int index = getIndex(availability.getId());
+            availabilityList.add(index, availability);
+            return availability;
+        }
+        throw new NoSuchUserException();
+    }
+
+    private int getIndex(Long id) {
+        Availability availability = availabilityList.stream()
+                .filter(av -> av.getId().equals(id))
+                .findAny().orElse(null);
+
+        return availabilityList.indexOf(availability);
     }
 }

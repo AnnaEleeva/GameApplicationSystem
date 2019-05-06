@@ -1,11 +1,9 @@
 package com.capgemini.gamecapmates.service;
 
-import com.capgemini.gamecapmates.Exceptions.NoSuchGameException;
 import com.capgemini.gamecapmates.Exceptions.NoSuchUserException;
 import com.capgemini.gamecapmates.domain.GamesHistory;
 import com.capgemini.gamecapmates.enums.GameResult;
 import com.capgemini.gamecapmates.enums.Level;
-import com.capgemini.gamecapmates.domain.Statistics;
 import com.capgemini.gamecapmates.domain.User;
 import com.capgemini.gamecapmates.dto.RankingPositionDto;
 import com.capgemini.gamecapmates.dto.StatisticsDto;
@@ -28,21 +26,24 @@ public class BasicUserInformationService {
     private UserMapper userMapper;
     private GamesHistoryRepository gamesHistoryRepository;
 
-    private static final Logger logger = Logger.getLogger(BasicUserInformationService.class);
+    static Logger logger = Logger.getLogger(BasicUserInformationService.class);
 
     @Autowired
     public BasicUserInformationService(UserRepository userRepository, UserMapper userMapper, GamesHistoryRepository gamesHistoryRepository) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
-        this.gamesHistoryRepository=gamesHistoryRepository;
+        this.gamesHistoryRepository = gamesHistoryRepository;
     }
 
     public UserDto updateUserBasicInformation(final UserUpdateDto userUpdate) throws NoSuchUserException {
-        User user = userMapper.mapUserUpdateDtoToUser(userUpdate);
+        if (userUpdate != null) {
+            User user = userMapper.mapUserUpdateDtoToUser(userUpdate);
+            User updatedUser = userRepository.edit(user);
 
-        User user1 = userRepository.add(user);
-
-        return userMapper.mapEntityToDto(user1);
+            return userMapper.mapEntityToDto(updatedUser);
+        } else {
+            throw new NoSuchUserException();
+        }
     }
 
     public UserDto findUserById(Long user_id) throws NoSuchUserException {

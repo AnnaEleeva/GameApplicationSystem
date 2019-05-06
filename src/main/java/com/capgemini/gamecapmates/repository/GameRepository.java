@@ -80,4 +80,9 @@ public class GameRepository implements Dao<Game> {
         Predicate<Game> condition= user1 -> user1.equals(game);
         gameList.removeIf(condition);
     }
+
+    @Override
+    public Game edit(Game game) {
+        return null;
+    }
 }
