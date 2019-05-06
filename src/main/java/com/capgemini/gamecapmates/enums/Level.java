@@ -1,4 +1,4 @@
-package com.capgemini.gamecapmates.domain;
+package com.capgemini.gamecapmates.enums;
 
 public enum Level {
     CAN_I_PLAY_DADDY,

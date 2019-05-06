@@ -1,5 +1,6 @@
 package com.capgemini.gamecapmates.dto;
 
+import com.capgemini.gamecapmates.enums.Category;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -14,5 +15,6 @@ public class GameDto {
     private LocalDate year_of_publishment; //calendar
     private int minNumberOfPlayers;
     private int maxNumberOfplayers;
+    private Category category;
     private String description;
 }

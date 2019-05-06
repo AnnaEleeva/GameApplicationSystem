@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public final class UserMapper {
+public class UserMapper {
 
 
     public User mapDtoToEntity(final UserDto userDto) throws NoSuchUserException {
@@ -60,7 +60,7 @@ public final class UserMapper {
 
     }
 
-    public int calculateAge(LocalDate birthDate) {
+    private int calculateAge(LocalDate birthDate) {
         if ((birthDate != null)) {
             return Period.between(birthDate, LocalDate.now()).getYears();
         } else {
@@ -79,8 +79,8 @@ public final class UserMapper {
                         user.getPassword(),
                         user.getMotto(),
                         user.getUserGames(),
-                        user.getUserPreviousGames(),
-                        user.getUserTimeAvailability()
+                        user.getUserGamesHistory(),
+                        user.getUserAvailabilityHours()
                 )).collect(Collectors.toList());
     }
 }

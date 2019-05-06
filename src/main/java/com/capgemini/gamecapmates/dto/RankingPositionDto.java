@@ -10,4 +10,5 @@ import lombok.EqualsAndHashCode;
 @Builder
 @EqualsAndHashCode
 public class RankingPositionDto {
+    private long rankingPlace;
 }

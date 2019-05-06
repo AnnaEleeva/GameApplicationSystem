@@ -1,6 +1,6 @@
 package com.capgemini.gamecapmates.dto;
 
-import com.capgemini.gamecapmates.domain.Level;
+import com.capgemini.gamecapmates.enums.Level;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,6 +11,7 @@ import lombok.EqualsAndHashCode;
 @Builder
 @EqualsAndHashCode
 public class StatisticsDto {
+    private Long userId;
     private Level level;
     private long gameWin;
     private long gameLose;

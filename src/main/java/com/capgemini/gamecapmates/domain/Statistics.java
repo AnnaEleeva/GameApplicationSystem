@@ -1,5 +1,6 @@
 package com.capgemini.gamecapmates.domain;
 
+import com.capgemini.gamecapmates.enums.Level;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,7 +10,8 @@ import lombok.EqualsAndHashCode;
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode
-class Statistics {
+public class Statistics {
+    private Long userId;
     private Level level;
     private long gameWin;
     private long gameLose;

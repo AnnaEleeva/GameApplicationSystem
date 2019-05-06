@@ -1,5 +1,6 @@
 package com.capgemini.gamecapmates.domain;
 
+import com.capgemini.gamecapmates.enums.Category;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -14,6 +15,7 @@ public class Game{
     private LocalDate year_of_publishment; //calendar
     private int minNumberOfPlayers;
     private int maxNumberOfplayers;
+    private Category category;
     private String description;
 
 }

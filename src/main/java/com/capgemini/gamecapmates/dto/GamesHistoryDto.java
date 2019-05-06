@@ -1,12 +1,14 @@
 package com.capgemini.gamecapmates.dto;
 
 import com.capgemini.gamecapmates.domain.User;
+import com.capgemini.gamecapmates.enums.GameResult;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Data
@@ -15,9 +17,10 @@ import java.util.Optional;
 @EqualsAndHashCode
 public class GamesHistoryDto {
     private Long id;
-    private Optional<User> userId;
+    private Long idGame;
     private LocalDate date;
     private String action;
-    private String details;
+    private ArrayList<Long> players;
+    private GameResult gameResult;
     private Double rating;
 }

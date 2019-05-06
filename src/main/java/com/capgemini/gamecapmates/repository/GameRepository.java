@@ -3,12 +3,15 @@ package com.capgemini.gamecapmates.repository;
 import com.capgemini.gamecapmates.Exceptions.NoSuchGameException;
 import com.capgemini.gamecapmates.dao.Dao;
 import com.capgemini.gamecapmates.domain.Game;
+import com.capgemini.gamecapmates.enums.Category;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Repository
 public class GameRepository implements Dao<Game> {
@@ -17,16 +20,40 @@ public class GameRepository implements Dao<Game> {
     public GameRepository(){
         gameList= new ArrayList<>();
 
-        gameList.add(new Game(1L, "Warcraft", LocalDate.of(2018, 12, 11), 2, 2,"Searching for players with skill"));
-        gameList.add(new Game(2L,"Wolfenstein",LocalDate.of(2018,1,1),2,5,""));
-        gameList.add(new Game(3L,"Wolfenstein: New Castle",LocalDate.of(2018,11,14),6,5,""));
-        gameList.add(new Game(4L,"Lich King",LocalDate.of(2018,7,17),3,1,""));
-        gameList.add(new Game(5L,"Synthetik",LocalDate.of(2018,6,21),4,2,""));
+        gameList.add(Game.builder()
+                .id(1L)
+                .name("Warcraft")
+                .year_of_publishment(LocalDate.of(2018, 12, 11))
+                .minNumberOfPlayers(2)
+                .maxNumberOfplayers(4)
+                .category(Category.RPG)
+                .description("Searching for players with skill")
+                .build());
+        gameList.add(Game.builder()
+                .id(1L)
+                .name("Wolfenstein: New Castle")
+                .year_of_publishment(LocalDate.of(2018, 1, 1))
+                .minNumberOfPlayers(2)
+                .maxNumberOfplayers(5)
+                .category(Category.STRATEGY)
+                .description("Searching for players with skill")
+                .build());
+        gameList.add(Game.builder()
+                .id(1L)
+                .name("Lich King")
+                .year_of_publishment(LocalDate.of(2018, 7, 17))
+                .minNumberOfPlayers(2)
+                .maxNumberOfplayers(6)
+                .category(Category.CARD)
+                .description("Searching for players with skill")
+                .build());
     }
 
     @Override
     public List<Game> findAll() {
-        return gameList;
+        return gameList.stream()
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -52,6 +79,5 @@ public class GameRepository implements Dao<Game> {
     public void remove(Game game) {
         Predicate<Game> condition= user1 -> user1.equals(game);
         gameList.removeIf(condition);
-        System.out.println(gameList);
     }
 }

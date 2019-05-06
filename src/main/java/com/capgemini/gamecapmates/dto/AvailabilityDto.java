@@ -1,6 +1,6 @@
 package com.capgemini.gamecapmates.dto;
 
-import com.capgemini.gamecapmates.domain.Disponibility;
+import com.capgemini.gamecapmates.enums.Disponibility;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 public class AvailabilityDto {
 
+    private Long id;
     private LocalDateTime dateFrom;
     private LocalDateTime dateTo;
     private Disponibility disponibility;

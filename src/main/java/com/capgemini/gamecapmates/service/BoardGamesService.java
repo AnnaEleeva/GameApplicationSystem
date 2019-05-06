@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BoardGamesService {
@@ -30,7 +31,7 @@ public class BoardGamesService {
         this.userRepository = userRepository;
     }
 
-    public List<GameDto> findAllGameFromCollection() {
+    public List<GameDto> findAllGame() {
         List<Game> games = gameRepository.findAll();
         return gameMapper.mapListToDto(games);
     }
@@ -45,14 +46,30 @@ public class BoardGamesService {
         return null;
     }
 
-    public List<GameDto> getUserGames(Long userId) {
+    public List<GameDto> getUserGamesCollection(Long userId) {
         try {
-            List<Game> userGames = userRepository.findById(userId).getUserGames();
+            List<Long> userGamesId = userRepository.findById(userId).getUserGames();
+            List<Game> games = gameRepository.findAll();
+            List<Game> userGames = games.stream()
+                    .filter(game -> userGamesId.contains(game.getId()))
+                    .collect(Collectors.toList());
             return gameMapper.mapListToDto(userGames);
         } catch (NoSuchUserException e) {
             logger.error("There is no user with such name");
         }
         return null;
+    }
+
+    public void removeGameFromUserCollection(Long userId, Long gameId) {
+        try {
+            if (gameRepository.findAll().contains(gameRepository.findById(gameId))
+                    && userRepository.findAll().contains(userRepository.findById(userId))) {
+                List<Long> userGamesId = userRepository.findById(userId).getUserGames();
+                userGamesId.remove(gameId);
+            }
+        } catch (NoSuchGameException | NoSuchUserException e) {
+            logger.error("There is no user with such name");
+        }
     }
 
     public void addGameAlreadyExistsToUser(Long userId, Long gameId) {
@@ -61,7 +78,7 @@ public class BoardGamesService {
                 if (userRepository.findAll().contains(userRepository.findById(userId))) {
                     User user = userRepository.findById(userId);
                     Game newGame = gameRepository.findById(gameId);
-                    user.getUserGames().add(newGame);
+                    user.getUserGames().add(newGame.getId());
                 }
         } catch (NoSuchGameException e) {
             logger.info("Game you trying add is not exist in collection. Try add new Game");
@@ -70,24 +87,14 @@ public class BoardGamesService {
         }
     }
 
-    public void addGameThatIsNotExists(Long userId, GameDto gameDto) throws NoSuchGameException {
-        if (!gameRepository.findAll().contains(gameDto)) {
+    public void addGameThatIsNotExistsInCollection(Long userId, GameDto gameDto) throws NoSuchGameException {
+        Game game = gameMapper.mapDtoToEntity(gameDto);
+        if (!gameRepository.findAll().contains(game)) {
             Game newGame = gameMapper.mapDtoToEntity(gameDto);
             gameRepository.add(newGame);
         } else {
             throw new NoSuchGameException();
         }
         addGameAlreadyExistsToUser(userId, gameDto.getId());
-    }
-
-
-    public void removeGameFromCollection(Long gameId) {
-        try {
-            if (gameRepository.findAll().contains(gameRepository.findById(gameId))) {
-                gameRepository.remove(gameRepository.findById(gameId));
-            }
-        } catch (NoSuchGameException e) {
-            logger.error("There is no user with such name");
-        }
     }
 }

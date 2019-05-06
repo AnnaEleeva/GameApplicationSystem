@@ -1,8 +1,6 @@
 package com.capgemini.gamecapmates.dto;
 
-import com.capgemini.gamecapmates.domain.Availability;
 import com.capgemini.gamecapmates.domain.Game;
-import com.capgemini.gamecapmates.domain.PreviousGames;
 import lombok.*;
 
 import java.util.List;
@@ -20,7 +18,7 @@ public class UserDto {
     private String password;
     private String motto;
 
-    private List<Game> userGames;
-    private List<PreviousGames> userPreviousGames;
-    private List<Availability> userTimeAvailability;
+    private List<Long> userGames;
+    private List<Long> userGamesHistory;
+    private List<Long> userAvailabilityHours;
 }

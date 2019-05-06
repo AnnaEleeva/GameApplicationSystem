@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public final class GameMapper {
+public class GameMapper {
 
     public Game mapDtoToEntity (GameDto gameDto){
         return Game.builder()
@@ -17,6 +17,7 @@ public final class GameMapper {
                 .year_of_publishment(gameDto.getYear_of_publishment())
                 .minNumberOfPlayers(gameDto.getMinNumberOfPlayers())
                 .maxNumberOfplayers(gameDto.getMaxNumberOfplayers())
+                .category(gameDto.getCategory())
                 .description(gameDto.getDescription())
                 .build();
     }
@@ -28,6 +29,7 @@ public final class GameMapper {
                 .year_of_publishment(game.getYear_of_publishment())
                 .minNumberOfPlayers(game.getMinNumberOfPlayers())
                 .maxNumberOfplayers(game.getMaxNumberOfplayers())
+                .category(game.getCategory())
                 .description(game.getDescription())
                 .build();
     }
@@ -41,6 +43,7 @@ public final class GameMapper {
                         game.getYear_of_publishment(),
                         game.getMinNumberOfPlayers(),
                         game.getMaxNumberOfplayers(),
+                        game.getCategory(),
                         game.getDescription()
                 )).collect(Collectors.toList());
     }

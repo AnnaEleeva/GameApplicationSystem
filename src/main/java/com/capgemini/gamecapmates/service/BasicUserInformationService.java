@@ -1,33 +1,40 @@
 package com.capgemini.gamecapmates.service;
 
+import com.capgemini.gamecapmates.Exceptions.NoSuchGameException;
 import com.capgemini.gamecapmates.Exceptions.NoSuchUserException;
-import com.capgemini.gamecapmates.domain.GameResult;
-import com.capgemini.gamecapmates.domain.Level;
+import com.capgemini.gamecapmates.domain.GamesHistory;
+import com.capgemini.gamecapmates.enums.GameResult;
+import com.capgemini.gamecapmates.enums.Level;
+import com.capgemini.gamecapmates.domain.Statistics;
 import com.capgemini.gamecapmates.domain.User;
 import com.capgemini.gamecapmates.dto.RankingPositionDto;
 import com.capgemini.gamecapmates.dto.StatisticsDto;
 import com.capgemini.gamecapmates.dto.UserDto;
 import com.capgemini.gamecapmates.dto.UserUpdateDto;
 import com.capgemini.gamecapmates.mapper.UserMapper;
+import com.capgemini.gamecapmates.repository.GamesHistoryRepository;
 import com.capgemini.gamecapmates.repository.UserRepository;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BasicUserInformationService {
 
     private UserRepository userRepository;
     private UserMapper userMapper;
+    private GamesHistoryRepository gamesHistoryRepository;
 
     private static final Logger logger = Logger.getLogger(BasicUserInformationService.class);
 
     @Autowired
-    public BasicUserInformationService(UserRepository userRepository,UserMapper userMapper) {
+    public BasicUserInformationService(UserRepository userRepository, UserMapper userMapper, GamesHistoryRepository gamesHistoryRepository) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
+        this.gamesHistoryRepository=gamesHistoryRepository;
     }
 
     public UserDto updateUserBasicInformation(final UserUpdateDto userUpdate) throws NoSuchUserException {
@@ -55,33 +62,26 @@ public class BasicUserInformationService {
         userRepository.remove(user);
     }
 
-    public StatisticsDto getUserStatistics(Long userId) throws NoSuchUserException { // liczba wygranych, przegranych zremisowanych
-        StatisticsDto statisticsDto= userRepository.findById(userId);
+    public StatisticsDto getUserStatistics(Long userId) throws NoSuchUserException {
+        if (userRepository.findAll().contains(userRepository.findById(userId))) {
+            return StatisticsDto.builder()
+                    .userId(userId)
+                    .level(calculateLevel(userId))
+                    .gameWin(numberOfWonGames(userId))
+                    .gameLose(numberOfLoseGames(userId))
+                    .gameDraw(numberOfDraw(userId))
+                    .build();
+        } else {
+            throw new NoSuchUserException();
+        }
+    }
 
+    public RankingPositionDto getUserPositionInRanking(Long userid) throws NoSuchUserException {
+        Long maxGamesWinByUsers = gamesHistoryRepository.findAll().stream()
+                .filter(gamesHistory -> gamesHistory.getGameResult().equals(GameResult.WIN))
+                .count();
+         // sort ?
         return null;
-    }
-
-    private RankingPositionDto getPositionInRanking(Long id) {
-
-        return null;
-    }
-
-    private long numberOfWonGames(Long userId) throws NoSuchUserException {
-        return userRepository.findById(userId).getUserPreviousGames().stream()
-                .filter(previousGames -> previousGames.getGameResult().equals(GameResult.WIN))
-                .count();
-    }
-
-    private long numberOfDraw(Long userId) throws NoSuchUserException {
-        return userRepository.findById(userId).getUserPreviousGames().stream()
-                .filter(previousGames -> previousGames.getGameResult().equals(GameResult.DRAW))
-                .count();
-    }
-
-    private long numberOfLoseGames(Long userId) throws NoSuchUserException {
-        return userRepository.findById(userId).getUserPreviousGames().stream()
-                .filter(previousGames -> previousGames.getGameResult().equals(GameResult.LOSE))
-                .count();
     }
 
     private Level calculateLevel(Long userId) {
@@ -98,10 +98,38 @@ public class BasicUserInformationService {
             } else {
                 return Level.I_AM_DEATH_INCARNATE;
             }
-        }catch(NoSuchUserException e){
+        } catch (NoSuchUserException e) {
             logger.error("There is no user with such name");
         }
         return null;
     }
 
+    private List<GamesHistory> getGamesHistoryOfUser(Long userId) throws NoSuchUserException {
+        List<Long> userHistory = userRepository.findById(userId).getUserGamesHistory();
+        List<GamesHistory> allgamesHistory = gamesHistoryRepository.findAll();
+        return allgamesHistory.stream()
+                .filter(gamesHistory -> userHistory.contains(gamesHistory.getId()))
+                .collect(Collectors.toList());
+    }
+
+    private long numberOfWonGames(Long userId) throws NoSuchUserException {
+        List<GamesHistory> userGameHistory = getGamesHistoryOfUser(userId);
+        return userGameHistory.stream()
+                .filter(gamesHistory -> gamesHistory.getGameResult().equals(GameResult.WIN))
+                .count();
+    }
+
+    private long numberOfDraw(Long userId) throws NoSuchUserException {
+        List<GamesHistory> userGameHistory = getGamesHistoryOfUser(userId);
+        return userGameHistory.stream()
+                .filter(gamesHistory -> gamesHistory.getGameResult().equals(GameResult.DRAW))
+                .count();
+    }
+
+    private long numberOfLoseGames(Long userId) throws NoSuchUserException {
+        List<GamesHistory> userGameHistory = getGamesHistoryOfUser(userId);
+        return userGameHistory.stream()
+                .filter(gamesHistory -> gamesHistory.getGameResult().equals(GameResult.LOSE))
+                .count();
+    }
 }
