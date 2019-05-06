@@ -16,4 +16,5 @@ public class StatisticsDto {
     private long gameWin;
     private long gameLose;
     private long gameDraw;
+    private Long rankingPosition;
 }

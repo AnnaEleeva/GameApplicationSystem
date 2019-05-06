@@ -25,6 +25,9 @@ public class UserMapper {
                     .email(userDto.getEmail())
                     .password(userDto.getPassword())
                     .motto(userDto.getMotto())
+                    .userGames(userDto.getUserGames())
+                    .userGamesHistory(userDto.getUserGamesHistory())
+                    .userAvailabilityHours(userDto.getUserAvailabilityHours())
                     .build();
         }
         throw new NoSuchUserException();
@@ -40,6 +43,9 @@ public class UserMapper {
                     .email(user.getEmail())
                     .password(user.getPassword())
                     .motto(user.getMotto())
+                    .userGames(user.getUserGames())
+                    .userGamesHistory(user.getUserGamesHistory())
+                    .userAvailabilityHours(user.getUserAvailabilityHours())
                     .build();
         }
         throw new NoSuchUserException();

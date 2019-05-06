@@ -2,13 +2,14 @@ package com.capgemini.gamecapmates.service;
 
 import com.capgemini.gamecapmates.Exceptions.NoSuchUserException;
 import com.capgemini.gamecapmates.domain.GamesHistory;
+import com.capgemini.gamecapmates.domain.Statistics;
 import com.capgemini.gamecapmates.enums.GameResult;
 import com.capgemini.gamecapmates.enums.Level;
 import com.capgemini.gamecapmates.domain.User;
-import com.capgemini.gamecapmates.dto.RankingPositionDto;
 import com.capgemini.gamecapmates.dto.StatisticsDto;
 import com.capgemini.gamecapmates.dto.UserDto;
 import com.capgemini.gamecapmates.dto.UserUpdateDto;
+import com.capgemini.gamecapmates.mapper.StatisticsMapper;
 import com.capgemini.gamecapmates.mapper.UserMapper;
 import com.capgemini.gamecapmates.repository.GamesHistoryRepository;
 import com.capgemini.gamecapmates.repository.UserRepository;
@@ -25,14 +26,34 @@ public class BasicUserInformationService {
     private UserRepository userRepository;
     private UserMapper userMapper;
     private GamesHistoryRepository gamesHistoryRepository;
+    private StatisticsMapper statisticsMapper;
 
     static Logger logger = Logger.getLogger(BasicUserInformationService.class);
 
     @Autowired
-    public BasicUserInformationService(UserRepository userRepository, UserMapper userMapper, GamesHistoryRepository gamesHistoryRepository) {
+    public BasicUserInformationService(UserRepository userRepository, UserMapper userMapper, GamesHistoryRepository gamesHistoryRepository, StatisticsMapper statisticsMapper) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.gamesHistoryRepository = gamesHistoryRepository;
+        this.statisticsMapper = statisticsMapper;
+    }
+
+    public UserDto userView(UserDto userDto) throws NoSuchUserException {
+        User user = userMapper.mapDtoToEntity(userDto);
+        return UserDto.builder()
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .age(user.getAge())
+                .motto(user.getMotto())
+                .build();
+    }
+
+    public StatisticsDto statisticsView(StatisticsDto statisticsDto) {
+        Statistics statistics = statisticsMapper.mapDtotoEntity(statisticsDto);
+        return StatisticsDto.builder()
+                .level(statistics.getLevel())
+                .rankingPosition(statistics.getRankingPosition())
+                .build();
     }
 
     public UserDto updateUserBasicInformation(final UserUpdateDto userUpdate) throws NoSuchUserException {
@@ -58,6 +79,11 @@ public class BasicUserInformationService {
         return userMapper.mapListToDto(users);
     }
 
+    public void addUserToRepository(UserDto userDto) throws NoSuchUserException {
+        User user = userMapper.mapDtoToEntity(userDto);
+        userRepository.add(user);
+    }
+
     public void removeUser(UserDto userDto) throws NoSuchUserException {
         User user = userMapper.mapDtoToEntity(userDto);
         userRepository.remove(user);
@@ -71,17 +97,18 @@ public class BasicUserInformationService {
                     .gameWin(numberOfWonGames(userId))
                     .gameLose(numberOfLoseGames(userId))
                     .gameDraw(numberOfDraw(userId))
+                    .rankingPosition(getUserPositionInRanking(userId))
                     .build();
         } else {
             throw new NoSuchUserException();
         }
     }
 
-    public RankingPositionDto getUserPositionInRanking(Long userid) throws NoSuchUserException {
+    private Long getUserPositionInRanking(Long userid) throws NoSuchUserException {
         Long maxGamesWinByUsers = gamesHistoryRepository.findAll().stream()
                 .filter(gamesHistory -> gamesHistory.getGameResult().equals(GameResult.WIN))
                 .count();
-         // sort ?
+        // sort ?
         return null;
     }
 

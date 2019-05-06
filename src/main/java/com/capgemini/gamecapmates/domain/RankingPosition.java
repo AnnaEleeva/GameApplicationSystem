@@ -10,5 +10,5 @@ import lombok.EqualsAndHashCode;
 @Builder
 @EqualsAndHashCode
 class RankingPosition {
-    private long rankingPlace;
+    private Long rankingPlace;
 }

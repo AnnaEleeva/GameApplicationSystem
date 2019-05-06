@@ -1,9 +1,6 @@
 package com.capgemini.gamecapmates;
 
-import com.capgemini.gamecapmates.mapper.AvailabilityMapper;
-import com.capgemini.gamecapmates.mapper.GameMapper;
-import com.capgemini.gamecapmates.mapper.HistoryGameMapper;
-import com.capgemini.gamecapmates.mapper.UserMapper;
+import com.capgemini.gamecapmates.mapper.*;
 import com.capgemini.gamecapmates.repository.AvailabilityRepository;
 import com.capgemini.gamecapmates.repository.GameRepository;
 import com.capgemini.gamecapmates.repository.GamesHistoryRepository;
@@ -19,8 +16,8 @@ import org.springframework.context.annotation.Configuration;
 public class AppConfig {
 
     @Bean
-    BasicUserInformationService userService(UserRepository userRepository, UserMapper userMapper, GamesHistoryRepository gamesHistoryRepository) {
-        return new BasicUserInformationService(userRepository, userMapper, gamesHistoryRepository);
+    BasicUserInformationService userService(UserRepository userRepository, UserMapper userMapper, GamesHistoryRepository gamesHistoryRepository, StatisticsMapper statisticsMapper) {
+        return new BasicUserInformationService(userRepository, userMapper, gamesHistoryRepository,statisticsMapper);
     }
 
     @Bean
