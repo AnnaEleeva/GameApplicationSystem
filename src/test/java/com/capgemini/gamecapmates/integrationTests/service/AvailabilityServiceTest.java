@@ -59,7 +59,7 @@ public class AvailabilityServiceTest {
         //when
          availabilityService.addAvailabilityHours(availabilityToUpdate, 1L);
         //then
-        assertEquals(2, userRepository.findById(1L).getUserAvailabilityHours().size());
+        assertEquals(1, userRepository.findById(1L).getUserAvailabilityHours().size());
 
     }
 

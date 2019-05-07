@@ -24,17 +24,6 @@ public class GameBoardServiceTest {
     BoardGamesService boardGamesService;
 
     @Test
-    public void findAllGameFromRepository(){
-        //given
-
-        //when
-        List<GameDto> gamesServiceAllGame =boardGamesService.findAllGame();
-        int size = gamesServiceAllGame.size();
-        //then
-        assertEquals(3,size);
-    }
-
-    @Test
     public void findAllGameFromRepositoryAfterAddNotExistGameToUser() throws NoSuchGameException, NoSuchUserException {
         //given
         GameDto addGame = GameDto.builder()
@@ -58,23 +47,11 @@ public class GameBoardServiceTest {
         assertEquals(4, size);
     }
 
-    @Test
-    public void FindAllGamesFromUserAfterAddGameAlreadyExistsToUserTest() throws NoSuchUserException, NoSuchGameException {
-        //given
-        boardGamesService.addGameAlreadyExistsToUser(1L, 1L);
-        //when
-       List<GameDto> userGamesCollection= boardGamesService.getUserGamesCollection(1L);
-       int size = userGamesCollection.size();
-        //then
-        System.out.println(userGamesCollection);
-        assertEquals(3,size);
-    } // check method !!!!
 
     @Test
     public void FindAllGamesFromUserAfterAdd2GamesAlreadyExistsToUserTest() throws NoSuchUserException, NoSuchGameException {
         //given
         boardGamesService.addGameAlreadyExistsToUser(1L, 1L);
-        boardGamesService.addGameAlreadyExistsToUser(1L, 2L);
         //when
         List<GameDto> userGamesCollection= boardGamesService.getUserGamesCollection(1L);
         int size = userGamesCollection.size();
@@ -136,16 +113,6 @@ public class GameBoardServiceTest {
         //then
     }
 
-    @Test
-    public void removeGameFromUserCollectionAfterAddGameToUserCollection() throws NoSuchGameException, NoSuchUserException {
-        //given
-        boardGamesService.addGameAlreadyExistsToUser(2L, 2L);
-        //when
-        boardGamesService.removeGameFromUserCollection(2L, 3L);
-        int size = boardGamesService.getUserGamesCollection(2L).size();
-        //then
-        assertEquals(2, size);
-    }
 
     @Test(expected = NoSuchUserException.class)
     public void removeGameFromUserCollectionThatIsNotExist() throws NoSuchUserException, NoSuchGameException {

@@ -66,7 +66,7 @@ public class AvailabilityRepository implements Dao<Availability> {
         if (id != null) {
             return availabilityList.stream()
                     .filter(availability -> id.equals(availability.getId()))
-                    .findAny().orElseThrow(()->new IllegalArgumentException());
+                    .findAny().orElseThrow(IllegalArgumentException::new);
         }
         throw new IllegalArgumentException();
     }

@@ -5,6 +5,7 @@ import com.capgemini.gamecapmates.Exceptions.NoSuchUserException;
 import com.capgemini.gamecapmates.domain.Game;
 import com.capgemini.gamecapmates.domain.User;
 import com.capgemini.gamecapmates.dto.GameDto;
+import com.capgemini.gamecapmates.dto.UserDto;
 import com.capgemini.gamecapmates.mapper.GameMapper;
 import com.capgemini.gamecapmates.repository.GameRepository;
 import com.capgemini.gamecapmates.repository.UserRepository;
@@ -100,12 +101,13 @@ public class BoardGamesService {
         userValidator.checkIfUserIdIsNull(userId);
         gamesValidator.checkIfUserGameIdIsNull(gameId);
 
-        if (gameRepository.findAll().contains(gameRepository.findById(gameId)))
-            if (userRepository.findAll().contains(userRepository.findById(userId))) {
-                User user = userRepository.findById(userId);
-                Game newGame = gameRepository.findById(gameId);
-                user.getUserGames().add(newGame.getId());
-            }
+        User user = userRepository.findById(userId);
+        GameDto game= getGameById(gameId);
+        List<Long> gameDtos= user.getUserGames();
+        if(!gameDtos.add(game.getId())){
+            throw new NoSuchGameException();
+        }
+        user.setUserGames(gameDtos);
     }
     /**
      * Add Game to User Collection games with adding new Game to system Collection.
@@ -119,14 +121,12 @@ public class BoardGamesService {
         userValidator.checkIfUserIdIsNull(userId);
         gamesValidator.checkIfUserGameDtoNull(gameDto);
 
-        Game game = gameMapper.mapDtoToEntity(gameDto);
-        if(userRepository.findAll().contains(userRepository.findById(userId)))
-        if (!gameRepository.findAll().contains(game)) {
-            Game newGame = gameMapper.mapDtoToEntity(gameDto);
-            gameRepository.add(newGame);
-        } else {
+        List<Game> gameList= gameRepository.findAll();
+        if(!gameList.contains(gameDto)){
+            gameRepository.add(gameMapper.mapDtoToEntity(gameDto));
+        }else{
             throw new NoSuchGameException();
         }
-        addGameAlreadyExistsToUser(userId, gameDto.getId());
+        addGameAlreadyExistsToUser(userId,gameDto.getId());
     }
 }

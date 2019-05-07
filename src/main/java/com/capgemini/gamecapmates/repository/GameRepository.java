@@ -73,7 +73,7 @@ public class GameRepository implements Dao<Game> {
         if(id!=null) {
             return gameList.stream()
                     .filter(game -> id.equals(game.getId()))
-                    .findAny().orElseThrow(()->new NoSuchGameException());
+                    .findAny().orElseThrow(NoSuchGameException::new);
 
         } throw new NoSuchGameException();
     }

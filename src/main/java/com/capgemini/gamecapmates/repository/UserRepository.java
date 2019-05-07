@@ -75,7 +75,7 @@ public class UserRepository implements Dao<User> {
         if (id != null) {
             return userList.stream()
                     .filter(user -> id.equals(user.getId()))
-                    .findAny().orElseThrow(() -> new NoSuchUserException());
+                    .findAny().orElseThrow(NoSuchUserException::new);
         }
         throw new NoSuchUserException();
     }

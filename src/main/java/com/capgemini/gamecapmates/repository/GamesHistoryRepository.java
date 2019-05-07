@@ -74,7 +74,7 @@ public class GamesHistoryRepository implements Dao<GamesHistory> {
         if (id != null) {
             return gamesHistoryList.stream()
                     .filter(gamesHistory -> gamesHistory.getId().equals(id))
-                    .findAny().orElseThrow(()->new NoSuchUserException());
+                    .findAny().orElseThrow(NoSuchUserException::new);
         }
         throw new NoSuchUserException();
     }
