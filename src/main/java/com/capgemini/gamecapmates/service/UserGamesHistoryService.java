@@ -23,7 +23,11 @@ public class UserGamesHistoryService {
         this.historyGameMapper = historyGameMapper;
         this.userRepository = userRepository;
     }
-
+    /**
+     * Finding history of played games of specific user
+     * @param userId find user by Id
+     * @throws NoSuchUserException check if user is in system collection
+     * */
     public List<GamesHistoryDto> findAllUserGameHistory(Long userId) throws NoSuchUserException {
         List<Long> userGamesId = userRepository.findById(userId).getUserGamesHistory();
         List<GamesHistory> historyList = historyRepository.findAll();

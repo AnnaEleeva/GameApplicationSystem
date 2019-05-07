@@ -2,7 +2,6 @@ package com.capgemini.gamecapmates.integrationTests.service;
 
 import com.capgemini.gamecapmates.Exceptions.NoSuchUserException;
 import com.capgemini.gamecapmates.GameCapMatesBoardApplication;
-import com.capgemini.gamecapmates.domain.User;
 import com.capgemini.gamecapmates.dto.UserDto;
 import com.capgemini.gamecapmates.dto.UserUpdateDto;
 import com.capgemini.gamecapmates.mapper.UserMapper;
@@ -41,8 +40,10 @@ public class BasicUserInformationServiceTest {
         final UserDto expecteduser = userMapper.mapUserUpdateToDto(userUpdate);
         //when
         UserDto result = basicUserInformationService.updateUserBasicInformation(userUpdate);
+        UserDto resultUser= basicUserInformationService.findUserById(2L);
         //then
         assertEquals(expecteduser, result);
+        assertEquals(expecteduser,resultUser);
     }
 
     @Test(expected = NoSuchUserException.class)

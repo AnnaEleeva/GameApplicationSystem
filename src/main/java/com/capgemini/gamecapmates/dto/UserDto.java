@@ -1,6 +1,5 @@
 package com.capgemini.gamecapmates.dto;
 
-import com.capgemini.gamecapmates.domain.Game;
 import lombok.*;
 
 import java.util.List;

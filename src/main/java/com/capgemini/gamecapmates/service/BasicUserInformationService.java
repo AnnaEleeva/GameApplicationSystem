@@ -13,6 +13,7 @@ import com.capgemini.gamecapmates.mapper.StatisticsMapper;
 import com.capgemini.gamecapmates.mapper.UserMapper;
 import com.capgemini.gamecapmates.repository.GamesHistoryRepository;
 import com.capgemini.gamecapmates.repository.UserRepository;
+import com.capgemini.gamecapmates.validation.UserValidator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,18 +28,26 @@ public class BasicUserInformationService {
     private UserMapper userMapper;
     private GamesHistoryRepository gamesHistoryRepository;
     private StatisticsMapper statisticsMapper;
+    private UserValidator userValidator;
 
-    static Logger logger = Logger.getLogger(BasicUserInformationService.class);
+   private static Logger logger = Logger.getLogger(BasicUserInformationService.class);
 
-    @Autowired
-    public BasicUserInformationService(UserRepository userRepository, UserMapper userMapper, GamesHistoryRepository gamesHistoryRepository, StatisticsMapper statisticsMapper) {
+    public BasicUserInformationService(UserRepository userRepository, UserMapper userMapper, GamesHistoryRepository gamesHistoryRepository, StatisticsMapper statisticsMapper, UserValidator userValidator) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.gamesHistoryRepository = gamesHistoryRepository;
         this.statisticsMapper = statisticsMapper;
+        this.userValidator= userValidator;
     }
-
+    /**
+     *display user data with specific basic information
+     * @param userDto object of user to display
+     * @throws NoSuchUserException check if object or component of user is not null
+     * */
     public UserDto userView(UserDto userDto) throws NoSuchUserException {
+        userValidator.checkIfUserDtoComponentIsNull(userDto);
+        userValidator.checkIfUserDtoIsNull(userDto);
+
         User user = userMapper.mapDtoToEntity(userDto);
         return UserDto.builder()
                 .firstName(user.getFirstName())
@@ -47,49 +56,89 @@ public class BasicUserInformationService {
                 .motto(user.getMotto())
                 .build();
     }
+    /**
+     *display user data with specific basic information
+     * @param statisticsDto object od user statistic to display
+     * @throws NoSuchUserException - check if user statistics component and object are not null
+     * */
+    public StatisticsDto statisticsView(StatisticsDto statisticsDto) throws  NoSuchUserException {
+        userValidator.checkIfStatisticsUserIsNull(statisticsDto);
+        userValidator.checkIfStatisticsComponentIsDifferentThanNull(statisticsDto);
 
-    public StatisticsDto statisticsView(StatisticsDto statisticsDto) {
         Statistics statistics = statisticsMapper.mapDtotoEntity(statisticsDto);
         return StatisticsDto.builder()
                 .level(statistics.getLevel())
                 .rankingPosition(statistics.getRankingPosition())
                 .build();
     }
-
+    /**
+     *Edit and update user basic information
+     * @param userUpdate user to update
+     * @throws NoSuchUserException - check if user object to update Date component is right or if object is not null
+     * */
     public UserDto updateUserBasicInformation(final UserUpdateDto userUpdate) throws NoSuchUserException {
-        if (userUpdate != null) {
+        userValidator.checkIfUserUpdateIsNull(userUpdate);
+        userValidator.checkIfUserUpdateBirthDateIsSmaller(userUpdate);
+
             User user = userMapper.mapUserUpdateDtoToUser(userUpdate);
             User updatedUser = userRepository.edit(user);
 
             return userMapper.mapEntityToDto(updatedUser);
-        } else {
-            throw new NoSuchUserException();
-        }
     }
-
+    /**
+     *Search for User
+     * @param user_id search for user with specific id
+     * @throws NoSuchUserException - check if Id of User is not null
+     * */
     public UserDto findUserById(Long user_id) throws NoSuchUserException {
+        userValidator.checkIfUserIdIsNull(user_id);
+
         User user_Id = userRepository.findById(user_id);
 
         return userMapper.mapEntityToDto(user_Id);
     }
-
+    /**
+     *Search for all user in collection system
+     *
+     * */
     public List<UserDto> findAllUser() {
         List<User> users = userRepository.findAll();
 
         return userMapper.mapListToDto(users);
     }
-
+    /**
+     * Add user to system collection
+     * @param userDto object to add
+     * @throws NoSuchUserException- check if user object or component to add is not null
+     * */
     public void addUserToRepository(UserDto userDto) throws NoSuchUserException {
+        userValidator.checkIfUserDtoComponentIsNull(userDto);
+        userValidator.checkIfUserDtoIsNull(userDto);
+
         User user = userMapper.mapDtoToEntity(userDto);
         userRepository.add(user);
     }
-
+    /**
+     *Remove user from repository
+     * @param userDto object of user to remove
+     * @throws NoSuchUserException - check if user object to remove is not null
+     * */
     public void removeUser(UserDto userDto) throws NoSuchUserException {
+        userValidator.checkIfUserDtoIsNull(userDto);
+
         User user = userMapper.mapDtoToEntity(userDto);
         userRepository.remove(user);
     }
 
+    /**
+     * Return user object statistics from repository
+     * @param userId find user statistics by user id
+     * @throws NoSuchUserException- check if user Id is not null, check if contains in repository
+     * */
+    // find by user_id if user statistics component are not null
     public StatisticsDto getUserStatistics(Long userId) throws NoSuchUserException {
+        userValidator.checkIfUserIdIsNull(userId);
+
         if (userRepository.findAll().contains(userRepository.findById(userId))) {
             return StatisticsDto.builder()
                     .userId(userId)
@@ -104,7 +153,7 @@ public class BasicUserInformationService {
         }
     }
 
-    private Long getUserPositionInRanking(Long userid) throws NoSuchUserException {
+    private Long getUserPositionInRanking(Long userId) throws NoSuchUserException {
         Long maxGamesWinByUsers = gamesHistoryRepository.findAll().stream()
                 .filter(gamesHistory -> gamesHistory.getGameResult().equals(GameResult.WIN))
                 .count();

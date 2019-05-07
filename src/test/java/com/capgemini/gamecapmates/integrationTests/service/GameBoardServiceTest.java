@@ -1,4 +1,4 @@
-package com.capgemini.gamecapmates.unitTests.mapper.service;
+package com.capgemini.gamecapmates.integrationTests.service;
 
 import com.capgemini.gamecapmates.GameCapMatesBoardApplication;
 import com.capgemini.gamecapmates.service.BoardGamesService;

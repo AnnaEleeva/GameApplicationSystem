@@ -1,11 +1,14 @@
 package com.capgemini.gamecapmates.service;
 
+import com.capgemini.gamecapmates.Exceptions.AvailabilityException;
 import com.capgemini.gamecapmates.Exceptions.NoSuchUserException;
 import com.capgemini.gamecapmates.domain.Availability;
 import com.capgemini.gamecapmates.dto.AvailabilityDto;
 import com.capgemini.gamecapmates.mapper.AvailabilityMapper;
 import com.capgemini.gamecapmates.repository.AvailabilityRepository;
 import com.capgemini.gamecapmates.repository.UserRepository;
+import com.capgemini.gamecapmates.validation.AvailabilityValidator;
+import com.capgemini.gamecapmates.validation.UserValidator;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,27 +18,59 @@ public class AvailabilityService {
     private AvailabilityRepository availabilityRepository;
     private AvailabilityMapper availabilityMapper;
     private UserRepository userRepository;
+    private UserValidator userValidator;
+    private AvailabilityValidator availabilityValidator;
 
-    public AvailabilityService(AvailabilityRepository availabilityRepository, AvailabilityMapper availabilityMapper, UserRepository userRepository) {
+    public AvailabilityService(AvailabilityRepository availabilityRepository, AvailabilityMapper availabilityMapper, UserRepository userRepository,
+                               UserValidator userValidator, AvailabilityValidator availabilityValidator) {
         this.availabilityRepository = availabilityRepository;
         this.availabilityMapper = availabilityMapper;
         this.userRepository = userRepository;
+        this.userValidator= userValidator;
+        this.availabilityValidator= availabilityValidator;
     }
 
-    public void addAvailabilityHours(AvailabilityDto availabilityDto, Long userId) throws NoSuchUserException {
+    // rest of Validation
+    /**
+     * Add when user is available or not to system
+     * @param availabilityDto add new availability to user
+     * @throws  AvailabilityException- check if availability object is not null
+     * @throws  NoSuchUserException- check if user Id is not null
+     * */
+    public void addAvailabilityHours(AvailabilityDto availabilityDto, Long userId) throws NoSuchUserException, AvailabilityException {
+        userValidator.checkIfUserIdIsNull(userId);
+        availabilityValidator.checkIfAvailabilityIsNotNull(availabilityDto);
+
         Availability userAvailability = availabilityMapper.mapDtoToEntity(availabilityDto);
         Long newAvailability = availabilityRepository.add(userAvailability).getId();
 
         userRepository.findById(userId).getUserAvailabilityHours().add(newAvailability);
     }
+    /**
+     * Remove availability of user from system
+     * @param availabilityId search for availability object in collection
+     * @param userId search by user Id
+     * @throws  AvailabilityException- check if availability object is not null
+     * @throws  NoSuchUserException- check if user Id is not null
+     * */
+    public void removeAvailabilityHours(Long userId, Long availabilityId) throws NoSuchUserException, AvailabilityException {
+        userValidator.checkIfUserIdIsNull(userId);
+        availabilityValidator.chechIfIdAvailabilityIsNull(availabilityId);
 
-    public void removeAvailabilityHours(Long userId, Long availabilityId) throws NoSuchUserException {
         List<Long> userAvailability = userRepository.findById(userId).getUserAvailabilityHours();
         userAvailability.remove(availabilityId);
     }
+    /**
+     * Edit and user can change his availability status
+     * @param availabilityDto add new availability to user
+     * @param userId search by user Id
+     * @throws  AvailabilityException- check if new availability object is not null
+     * @throws  NoSuchUserException- check if user Id is not null
+     * */
+    public AvailabilityDto editAvailabilityHours(AvailabilityDto availabilityDto, Long userId) throws NoSuchUserException, AvailabilityException { // edit with comments
+        userValidator.checkIfUserIdIsNull(userId);
+        availabilityValidator.checkIfAvailabilityIsNotNull(availabilityDto);
 
-    public AvailabilityDto editAvailabilityHours(AvailabilityDto availabilityDto, Long userId) throws NoSuchUserException { // edit with comments
-        if (availabilityDto != null) {
             Availability availability = availabilityMapper.mapDtoToEntity(availabilityDto);
             Availability updatedAvailability = availabilityRepository.edit(availability);
 
@@ -48,8 +83,6 @@ public class AvailabilityService {
                 }
             }
             return availabilityMapper.mapEntityToDto(updatedAvailability);
-        } else {
-            throw new NoSuchUserException();
-        }
+
     }
 }
