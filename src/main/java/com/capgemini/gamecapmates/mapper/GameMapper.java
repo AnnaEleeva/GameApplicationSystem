@@ -1,7 +1,10 @@
 package com.capgemini.gamecapmates.mapper;
 
+import com.capgemini.gamecapmates.Exceptions.NoSuchGameException;
 import com.capgemini.gamecapmates.domain.Game;
 import com.capgemini.gamecapmates.dto.GameDto;
+import com.capgemini.gamecapmates.validation.GamesValidator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -10,7 +13,11 @@ import java.util.stream.Collectors;
 @Component
 public class GameMapper {
 
-    public Game mapDtoToEntity (GameDto gameDto){
+    @Autowired
+    private GamesValidator gamesValidator;
+
+    public Game mapDtoToEntity (GameDto gameDto) throws NoSuchGameException {
+        gamesValidator.checkIfUserGameDtoNull(gameDto);
         return Game.builder()
                 .id(gameDto.getId())
                 .name(gameDto.getName())
@@ -22,7 +29,8 @@ public class GameMapper {
                 .build();
     }
 
-    public GameDto mapEntityToDto(Game game) {
+    public GameDto mapEntityToDto(Game game) throws NoSuchGameException {
+        gamesValidator.checkIfUserGameIsNull(game);
         return GameDto.builder()
                 .id(game.getId())
                 .name(game.getName())

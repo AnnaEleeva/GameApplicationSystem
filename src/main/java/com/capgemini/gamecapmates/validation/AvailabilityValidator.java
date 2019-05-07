@@ -35,4 +35,5 @@ public class AvailabilityValidator {
             throw new IllegalArgumentException();
         }
     }
+
 }

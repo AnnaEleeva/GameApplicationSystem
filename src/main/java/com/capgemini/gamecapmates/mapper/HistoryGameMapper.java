@@ -10,18 +10,6 @@ import java.util.stream.Collectors;
 @Component
 public class HistoryGameMapper {
 
-    public GamesHistoryDto mapToHistoryDto(GamesHistory gamesHistory) {
-        return GamesHistoryDto.builder()
-                .id(gamesHistory.getId())
-                .idGame(gamesHistory.getIdGame())
-                .date(gamesHistory.getDate())
-                .action(gamesHistory.getAction())
-                .players(gamesHistory.getPlayers())
-                .gameResult(gamesHistory.getGameResult())
-                .rating(gamesHistory.getRating())
-                .build();
-    }
-
     public List<GamesHistoryDto> mapHistoryListToHistoryDto(List<GamesHistory> historyList) {
         return historyList.stream()
                 .map(gamesHistory -> new GamesHistoryDto(

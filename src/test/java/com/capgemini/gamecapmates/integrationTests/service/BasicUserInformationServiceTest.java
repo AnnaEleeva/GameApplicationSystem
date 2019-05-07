@@ -7,8 +7,6 @@ import com.capgemini.gamecapmates.dto.UserDto;
 import com.capgemini.gamecapmates.dto.UserUpdateDto;
 import com.capgemini.gamecapmates.mapper.UserMapper;
 import com.capgemini.gamecapmates.service.BasicUserInformationService;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,26 +27,22 @@ import static org.junit.Assert.*;
 public class BasicUserInformationServiceTest {
 
     @Autowired
-    private BasicUserInformationService basicUserInformationService;
+    private  BasicUserInformationService basicUserInformationService;
     @Autowired
     private UserMapper userMapper;
 
-    @Before
-    public void setUp() throws NoSuchUserException {
-//implementation adding all builder
-    }
 
     @Test
     public void shouldUpdateUserBasicInformation() throws NoSuchUserException {
         //given
         final UserUpdateDto userUpdate = new UserUpdateDto(2L, "Adam", "Janusz", "janusz1@gmail.com", "janusz", LocalDate.of(1995, 1, 1), "Janusz");
-        final UserDto expecteduser = userMapper.mapUserUpdateToDto(userUpdate);
+        final UserDto expectedUser = userMapper.mapUserUpdateToDto(userUpdate);
         //when
         UserDto result = basicUserInformationService.updateUserBasicInformation(userUpdate);
         UserDto resultUser = basicUserInformationService.findUserById(2L);
         //then
-        assertEquals(expecteduser, result);
-        assertEquals(expecteduser, resultUser);
+        assertEquals(expectedUser, result);
+        assertEquals(expectedUser, resultUser);
     }
 
     @Test(expected = NoSuchUserException.class)
@@ -81,7 +75,7 @@ public class BasicUserInformationServiceTest {
                 .email("Jan_Kowalski@gmail.com")
                 .password("1234")
                 .motto("This is sparta")
-                .userGames(new ArrayList<>(Arrays.asList(2L, 4L)))
+                .userGames(new ArrayList<>(Arrays.asList(2L, 3L)))
                 .userGamesHistory(new ArrayList<>(Arrays.asList(1L, 2L)))
                 .userAvailabilityHours(new ArrayList<>(Collections.singletonList(2L)))
                 .build();
@@ -111,6 +105,7 @@ public class BasicUserInformationServiceTest {
         UserDto result = basicUserInformationService.findUserById(4L);
         // then
         assertEquals(expected, result);
+        basicUserInformationService.removeUser(expected);
     }
 
     @Test(expected = NoSuchUserException.class)
@@ -150,6 +145,7 @@ public class BasicUserInformationServiceTest {
         int size = allUserProfiles.size();
         //then
         assertEquals(4, size);
+        basicUserInformationService.removeUser(expected);
 
     }
 
@@ -164,7 +160,7 @@ public class BasicUserInformationServiceTest {
                 .email("Jan_Kowalski@gmail.com")
                 .password("1234")
                 .motto("This is sparta")
-                .userGames(new ArrayList<>(Arrays.asList(2L, 4L)))
+                .userGames(new ArrayList<>(Arrays.asList(2L, 3L)))
                 .userGamesHistory(new ArrayList<>(Arrays.asList(1L, 2L)))
                 .userAvailabilityHours(new ArrayList<>(Collections.singletonList(2L)))
                 .build();
@@ -243,11 +239,4 @@ public class BasicUserInformationServiceTest {
         //then
         assertEquals(expected, userStat);
     }
-
-
-    @After
-    public void removeAddedUser() {
-        // implementation
-    }
-
 }

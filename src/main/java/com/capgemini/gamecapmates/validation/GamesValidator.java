@@ -1,6 +1,8 @@
 package com.capgemini.gamecapmates.validation;
 
 import com.capgemini.gamecapmates.Exceptions.NoSuchGameException;
+import com.capgemini.gamecapmates.Exceptions.NoSuchUserException;
+import com.capgemini.gamecapmates.domain.Game;
 import com.capgemini.gamecapmates.dto.GameDto;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +19,11 @@ public class GamesValidator {
 
     public void checkIfUserGameDtoNull(GameDto gameDto) throws NoSuchGameException{
         if(gameDto == null){
+            throw new NoSuchGameException();
+        }
+    }
+    public void checkIfUserGameIsNull(Game game) throws NoSuchGameException{
+        if(game == null){
             throw new NoSuchGameException();
         }
     }

@@ -1,6 +1,7 @@
 package com.capgemini.gamecapmates.validation;
 
 import com.capgemini.gamecapmates.Exceptions.NoSuchUserException;
+import com.capgemini.gamecapmates.domain.User;
 import com.capgemini.gamecapmates.dto.StatisticsDto;
 import com.capgemini.gamecapmates.dto.UserDto;
 import com.capgemini.gamecapmates.dto.UserUpdateDto;
@@ -52,6 +53,12 @@ public class UserValidator {
 
     public void checkIfStatisticsComponentIsDifferentThanNull(StatisticsDto statisticsDto) throws NoSuchUserException{
         if(statisticsDto.getLevel()== null && statisticsDto.getRankingPosition()==null){
+            throw new NoSuchUserException();
+        }
+    }
+
+    public void checkIfUserIsNull(User user)throws NoSuchUserException{
+        if(user==null){
             throw new NoSuchUserException();
         }
     }

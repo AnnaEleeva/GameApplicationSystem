@@ -1,5 +1,6 @@
 package com.capgemini.gamecapmates.integrationTests.service;
 
+import com.capgemini.gamecapmates.Exceptions.AvailabilityException;
 import com.capgemini.gamecapmates.Exceptions.NoSuchUserException;
 import com.capgemini.gamecapmates.GameCapMatesBoardApplication;
 import com.capgemini.gamecapmates.dto.AvailabilityDto;
@@ -27,7 +28,7 @@ public class AvailabilityServiceTest {
     UserRepository userRepository;
 
     @Test
-    public void editAvailabilityHoursTest() throws NoSuchUserException {
+    public void editAvailabilityHoursTest() throws NoSuchUserException, AvailabilityException {
         //given
         AvailabilityDto availabilityToUpdate = AvailabilityDto.builder()
                 .id(1L)
@@ -37,10 +38,25 @@ public class AvailabilityServiceTest {
                 .information("Mom wants me to wash dish")
                 .build();
         //when
-      //  availabilityService.editAvailabilityHours(availabilityToUpdate,1L);
+        availabilityService.editAvailabilityHours(availabilityToUpdate);
         List<Long> availabilityDto=userRepository.findById(1L).getUserAvailabilityHours();
         //then
-       // assertEquals();
+        assertEquals(availabilityToUpdate,availabilityDto);
     }
+    @Test
+    public void removeAvailabilityHoursTest() throws NoSuchUserException {
+
+    }
+
+    @Test
+    public void addAvailabilityHoursTest() throws NoSuchUserException {
+
+    }
+
+    @Test
+    public void getAvailabilityForUserTest(){}
+
+    @Test
+    public void declineAvailabilityTest(){}
 
 }

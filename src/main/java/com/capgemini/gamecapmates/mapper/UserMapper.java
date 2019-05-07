@@ -4,6 +4,8 @@ import com.capgemini.gamecapmates.Exceptions.NoSuchUserException;
 import com.capgemini.gamecapmates.domain.User;
 import com.capgemini.gamecapmates.dto.UserDto;
 import com.capgemini.gamecapmates.dto.UserUpdateDto;
+import com.capgemini.gamecapmates.validation.UserValidator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -14,9 +16,11 @@ import java.util.stream.Collectors;
 @Component
 public class UserMapper {
 
+    @Autowired
+    private UserValidator userValidator;
 
     public User mapDtoToEntity(final UserDto userDto) throws NoSuchUserException {
-        if(userDto !=null) {
+        userValidator.checkIfUserDtoIsNull(userDto);
             return User.builder()
                     .id(userDto.getId())
                     .age(userDto.getAge())
@@ -29,12 +33,10 @@ public class UserMapper {
                     .userGamesHistory(userDto.getUserGamesHistory())
                     .userAvailabilityHours(userDto.getUserAvailabilityHours())
                     .build();
-        }
-        throw new NoSuchUserException();
     }
 
     public UserDto mapEntityToDto(final User user) throws NoSuchUserException {
-        if (user != null) {
+       userValidator.checkIfUserIsNull(user);
             return UserDto.builder()
                     .id(user.getId())
                     .age(user.getAge())
@@ -47,12 +49,11 @@ public class UserMapper {
                     .userGamesHistory(user.getUserGamesHistory())
                     .userAvailabilityHours(user.getUserAvailabilityHours())
                     .build();
-        }
-        throw new NoSuchUserException();
+
     }
 
     public User mapUserUpdateDtoToUser(UserUpdateDto userUpdate) throws NoSuchUserException{
-        if(userUpdate!=null){
+       userValidator.checkIfUserUpdateIsNull(userUpdate);
             return User.builder()
                     .id(userUpdate.getId())
                     .firstName(userUpdate.getFirstName())
@@ -61,12 +62,12 @@ public class UserMapper {
                     .password(userUpdate.getPassword())
                     .age(calculateAge(userUpdate.getBirthDate()))
                     .motto(userUpdate.getMotto())
-                    .build();}
-        throw new NoSuchUserException();
+                    .build();
 
     }
 
-    public UserDto mapUserUpdateToDto(UserUpdateDto userUpdateDto){
+    public UserDto mapUserUpdateToDto(UserUpdateDto userUpdateDto) throws NoSuchUserException {
+        userValidator.checkIfUserUpdateIsNull(userUpdateDto);
         return UserDto.builder()
                 .id(userUpdateDto.getId())
                 .age(calculateAge(userUpdateDto.getBirthDate()))

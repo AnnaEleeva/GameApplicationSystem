@@ -74,20 +74,24 @@ public class GamesHistoryRepository implements Dao<GamesHistory> {
         if (id != null) {
             return gamesHistoryList.stream()
                     .filter(gamesHistory -> gamesHistory.getId().equals(id))
-                    .findAny().orElse(null);
+                    .findAny().orElseThrow(()->new NoSuchUserException());
         }
         throw new NoSuchUserException();
     }
 
     @Override
     public void remove(GamesHistory gamesHistory) {
-        Predicate<GamesHistory> condition = user1 -> user1.equals(gamesHistory);
-        gamesHistoryList.removeIf(condition);
+        gamesHistoryList.remove(gamesHistory);
     }
 
     @Override
     public GamesHistory edit(GamesHistory gamesHistory) {
         return null;
+    }
+
+    @Override
+    public void clear() {
+        gamesHistoryList.clear();
     }
 
 }

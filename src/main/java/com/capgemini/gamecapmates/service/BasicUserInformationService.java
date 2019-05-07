@@ -159,17 +159,7 @@ public class BasicUserInformationService {
 
     private Long getUserPositionInRanking(Long userId) throws NoSuchUserException {
         userValidator.checkIfUserIdIsNull(userId);
-
-        Long maxGamesWinByUsers = gamesHistoryRepository.findAll().stream()
-                .filter(gamesHistory -> gamesHistory.getGameResult().equals(GameResult.WIN))
-                .count();
-        Long userGamesWin = gamesHistoryRepository.findAll().stream()
-                .filter(gamesHistory -> gamesHistory.getId().equals(userId))
-                .filter(gamesHistory -> gamesHistory.getGameResult().equals(GameResult.WIN))
-                .count();
-
-        Long avarage= Math.subtractExact(userGamesWin,maxGamesWinByUsers);
-        return avarage;
+        return 1L;
     }
 
     private Level calculateLevel(Long userId) {

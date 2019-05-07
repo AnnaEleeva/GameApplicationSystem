@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 import java.util.*;
 import java.util.function.Predicate;
 
+import static java.lang.Math.toIntExact;
+
 @Repository
 public class UserRepository implements Dao<User> {
     private List< User> userList;
@@ -73,34 +75,37 @@ public class UserRepository implements Dao<User> {
     public User findById(Long id) throws NoSuchUserException {
         if (id != null) {
             return userList.stream()
-                    .filter(user -> user.getId().equals(id))
-                    .findAny().orElse(null);
+                    .filter(user -> id.equals(user.getId()))
+                    .findAny().orElseThrow(()->new NoSuchUserException());
         }
         throw new NoSuchUserException();
     }
 
     @Override
     public void remove(User user) {
-        Predicate<User> condition = user1 -> user1.equals(user);
-        userList.removeIf(condition);
-        System.out.println(userList);
+        userList.remove(user);
+
     }
 
     @Override
     public User edit(User user) throws NoSuchUserException {
         if (user.getId() <= userList.size()) {
-            int index = getIndex(user.getId());
-            userList.add(index, user);
+            int index = toIntExact(getIndex(user.getId()));
+            userList.set(index, user);
             return user;
         }
         throw new NoSuchUserException();
     }
 
-    private int getIndex(Long id) {
+    private Long getIndex(Long id) {
         User user = userList.stream()
                 .filter(user1 -> user1.getId().equals(id))
                 .findAny().orElse(null);
 
-        return userList.indexOf(user);
+        return (long) userList.indexOf(user);
+    }
+
+    public void clear(){
+        userList.clear();
     }
 }

@@ -64,27 +64,27 @@ public class AvailabilityRepository implements Dao<Availability> {
     public Availability findById(Long id) {
         if (id != null) {
             return availabilityList.stream()
-                    .filter(availability -> availability.getId().equals(id))
-                    .findAny().orElse(null);
+                    .filter(availability -> id.equals(availability.getId()))
+                    .findAny().orElseThrow(()->new IllegalArgumentException());
         }
         throw new IllegalArgumentException();
     }
 
     @Override
     public void remove(Availability availability) {
-        Predicate<Availability> condition = user1 -> user1.equals(availability);
-        availabilityList.removeIf(condition);
+        availabilityList.remove(availability);
     }
 
     @Override
     public Availability edit(Availability availability) throws NoSuchUserException {
         if (availability.getId() <= availabilityList.size()) {
             int index = getIndex(availability.getId());
-            availabilityList.add(index, availability);
+            availabilityList.set(index, availability);
             return availability;
         }
         throw new NoSuchUserException();
     }
+
 
     private int getIndex(Long id) {
         Availability availability = availabilityList.stream()
@@ -92,5 +92,10 @@ public class AvailabilityRepository implements Dao<Availability> {
                 .findAny().orElse(null);
 
         return availabilityList.indexOf(availability);
+    }
+
+    @Override
+    public void clear() {
+        availabilityList.clear();
     }
 }
