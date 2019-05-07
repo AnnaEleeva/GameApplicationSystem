@@ -112,8 +112,8 @@ public class BasicUserInformationService {
      * @throws NoSuchUserException- check if user object or component to add is not null
      * */
     public void addUserToRepository(UserDto userDto) throws NoSuchUserException {
-        userValidator.checkIfUserDtoComponentIsNull(userDto);
         userValidator.checkIfUserDtoIsNull(userDto);
+        userValidator.checkIfUserDtoComponentIsNull(userDto);
 
         User user = userMapper.mapDtoToEntity(userDto);
         userRepository.add(user);
@@ -127,7 +127,11 @@ public class BasicUserInformationService {
         userValidator.checkIfUserDtoIsNull(userDto);
 
         User user = userMapper.mapDtoToEntity(userDto);
-        userRepository.remove(user);
+        if (userRepository.findAll().contains(userRepository.findById(userDto.getId()))) {
+            userRepository.remove(user);
+        } else {
+            throw new NoSuchUserException();
+        }
     }
 
     /**
@@ -154,11 +158,18 @@ public class BasicUserInformationService {
     }
 
     private Long getUserPositionInRanking(Long userId) throws NoSuchUserException {
+        userValidator.checkIfUserIdIsNull(userId);
+
         Long maxGamesWinByUsers = gamesHistoryRepository.findAll().stream()
                 .filter(gamesHistory -> gamesHistory.getGameResult().equals(GameResult.WIN))
                 .count();
-        // sort ?
-        return null;
+        Long userGamesWin = gamesHistoryRepository.findAll().stream()
+                .filter(gamesHistory -> gamesHistory.getId().equals(userId))
+                .filter(gamesHistory -> gamesHistory.getGameResult().equals(GameResult.WIN))
+                .count();
+
+        Long avarage= Math.subtractExact(userGamesWin,maxGamesWinByUsers);
+        return avarage;
     }
 
     private Level calculateLevel(Long userId) {

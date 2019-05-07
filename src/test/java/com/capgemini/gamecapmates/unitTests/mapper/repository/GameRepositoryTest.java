@@ -1,4 +1,4 @@
-package com.capgemini.gamecapmates.repository;
+package com.capgemini.gamecapmates.unitTests.mapper.repository;
 
 import com.capgemini.gamecapmates.GameCapMatesBoardApplication;
 import org.junit.runner.RunWith;

@@ -114,7 +114,7 @@ public class BoardGamesService {
      * @throws NoSuchUserException if user object is not exists in system collection or is not null
      *
      * */
-    public void addGameThatIsNotExistsInCollection(Long userId, GameDto gameDto) throws NoSuchGameException, NoSuchUserException {
+    public void addGameThatIsNotExistsToCollection(Long userId, GameDto gameDto) throws NoSuchGameException, NoSuchUserException {
         userValidator.checkIfUserIdIsNull(userId);
         gamesValidator.checkIfUserGameDtoNull(gameDto);
 
