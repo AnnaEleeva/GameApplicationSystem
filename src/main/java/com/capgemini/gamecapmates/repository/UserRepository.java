@@ -24,7 +24,7 @@ public class UserRepository implements Dao<User> {
                 .email("Jan_Kowalski@gmail.com")
                 .password("1234")
                 .motto("This is sparta")
-                .userGames(new ArrayList<>(Arrays.asList(2L,4L)))
+                .userGames(new ArrayList<>(Arrays.asList(2L,3L)))
                 .userGamesHistory(new ArrayList<>(Arrays.asList(1L,2L)))
                 .userAvailabilityHours(new ArrayList<>(Collections.singletonList(2L)))
                 .build());
@@ -36,7 +36,7 @@ public class UserRepository implements Dao<User> {
                 .email("Marcin1@gmail.com")
                 .password("Nowak1")
                 .motto("To the death!")
-                .userGames(new ArrayList<>(Arrays.asList(2L,4L,3L)))
+                .userGames(new ArrayList<>(Arrays.asList(2L,3L)))
                 .userGamesHistory(new ArrayList<>(Collections.singletonList(2L)))
                 .userAvailabilityHours(new ArrayList<>(Collections.singletonList(1L)))
                 .build());
@@ -48,7 +48,7 @@ public class UserRepository implements Dao<User> {
                 .email("Adas2@onet.pl")
                 .password("Bak1")
                 .motto("Dont die")
-                .userGames(new ArrayList<>(Arrays.asList(1L,4L)))
+                .userGames(new ArrayList<>(Arrays.asList(1L,2L)))
                 .userGamesHistory(new ArrayList<>(Collections.singletonList(3L)))
                 .userAvailabilityHours(new ArrayList<>(Collections.singletonList(3L)))
                 .build());

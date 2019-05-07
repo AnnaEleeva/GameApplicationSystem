@@ -9,7 +9,7 @@ public class GamesValidator {
 
     // add constructor check if is any game in repo or contains !!!
 
-    public void checkIfUserGameIsNull(Long gameId) throws NoSuchGameException {
+    public void checkIfUserGameIdIsNull(Long gameId) throws NoSuchGameException {
         if(gameId == null){
             throw new NoSuchGameException();
         }

@@ -3,7 +3,6 @@ package com.capgemini.gamecapmates.integrationTests.service;
 import com.capgemini.gamecapmates.Exceptions.NoSuchGameException;
 import com.capgemini.gamecapmates.Exceptions.NoSuchUserException;
 import com.capgemini.gamecapmates.GameCapMatesBoardApplication;
-import com.capgemini.gamecapmates.domain.Game;
 import com.capgemini.gamecapmates.dto.GameDto;
 import com.capgemini.gamecapmates.enums.Category;
 import com.capgemini.gamecapmates.service.BoardGamesService;
@@ -36,33 +35,132 @@ public class GameBoardServiceTest {
     }
 
     @Test
-    public void findAllGameFromRepositoryAfterAddGame() throws NoSuchGameException, NoSuchUserException {
+    public void findAllGameFromRepositoryAfterAddNotExistGameToUser() throws NoSuchGameException, NoSuchUserException {
         //given
         GameDto addGame = GameDto.builder()
                 .id(1L)
-                .name("Warcraft")
-                .year_of_publishment(LocalDate.of(2018, 12, 11))
+                .name("Devil from Hell")
+                .year_of_publishment(LocalDate.of(2017, 12, 11))
                 .minNumberOfPlayers(2)
                 .maxNumberOfplayers(4)
-                .category(Category.RPG)
+                .category(Category.CARD)
                 .description("Searching for players with skill")
                 .build();
 
-        boardGamesService.addGameThatIsNotExistsToCollection(4L,addGame);
+        boardGamesService.addGameThatIsNotExistsToCollection(2L,addGame);
         //when
         List<GameDto> gamesServiceAllGame = boardGamesService.findAllGame();
         int size = gamesServiceAllGame.size();
+        List<GameDto> userGames= boardGamesService.getUserGamesCollection(2L);
+        int sizeOfUserGames= userGames.size();
         //then
-        assertEquals(5, size);
+        assertEquals(4,sizeOfUserGames);
+        assertEquals(4, size);
     }
 
     @Test
-    public void addGameAlreadyExistsToUserTest(){
+    public void FindAllGamesFromUserAfterAddGameAlreadyExistsToUserTest() throws NoSuchUserException, NoSuchGameException {
+        //given
+        boardGamesService.addGameAlreadyExistsToUser(1L, 1L);
+        //when
+       List<GameDto> userGamesCollection= boardGamesService.getUserGamesCollection(1L);
+       int size = userGamesCollection.size();
+        //then
+        System.out.println(userGamesCollection);
+        assertEquals(3,size);
+    } // check method !!!!
 
+    @Test
+    public void FindAllGamesFromUserAfterAdd2GamesAlreadyExistsToUserTest() throws NoSuchUserException, NoSuchGameException {
+        //given
+        boardGamesService.addGameAlreadyExistsToUser(1L, 1L);
+        boardGamesService.addGameAlreadyExistsToUser(1L, 2L);
+        //when
+        List<GameDto> userGamesCollection= boardGamesService.getUserGamesCollection(1L);
+        int size = userGamesCollection.size();
+        //then
+        System.out.println(userGamesCollection);
+        assertEquals(4,size);
     }
 
     @Test
-    public void addGameThatIsNotExistsToUserTest(){
+    public void shouldReturnGameAfterAddGameFromGetGameById() throws NoSuchGameException, NoSuchUserException {
+        //given
+        GameDto addGame = GameDto.builder()
+                .id(5L)
+                .name("Devil from Hell")
+                .year_of_publishment(LocalDate.of(2017, 12, 11))
+                .minNumberOfPlayers(2)
+                .maxNumberOfplayers(4)
+                .category(Category.CARD)
+                .description("Searching for players with skill")
+                .build();
 
+        boardGamesService.addGameThatIsNotExistsToCollection(2L,addGame);
+        //when
+        GameDto game=boardGamesService.getGameById(5L);
+        //then
+        assertEquals(addGame,game);
     }
+
+    @Test(expected = NoSuchGameException.class )
+    public void ShouldReturnExceptionAfterGetGameByIdThatIsNotExist() throws NoSuchGameException {
+        //given
+        //when
+        boardGamesService.getGameById(7L);
+        //then
+    }
+
+    @Test(expected = NoSuchGameException.class)
+    public void ShouldReturnExceptionAfterGetGameByNullId() throws NoSuchGameException {
+        //given
+        //when
+        boardGamesService.getGameById(null);
+        //then
+    }
+
+    @Test (expected = NoSuchUserException.class)
+    public void getUserGamesCollectionThatDoesNotExistTest() throws NoSuchUserException {
+        //given
+        //when
+        boardGamesService.getUserGamesCollection(7L);
+        //then
+    }
+
+
+    @Test (expected = NoSuchUserException.class)
+    public void getUserGamesCollectionThatIsNullTest() throws NoSuchUserException {
+        //given
+        //when
+        boardGamesService.getUserGamesCollection(null);
+        //then
+    }
+
+    @Test
+    public void removeGameFromUserCollectionAfterAddGameToUserCollection() throws NoSuchGameException, NoSuchUserException {
+        //given
+        boardGamesService.addGameAlreadyExistsToUser(2L, 2L);
+        //when
+        boardGamesService.removeGameFromUserCollection(2L, 3L);
+        int size = boardGamesService.getUserGamesCollection(2L).size();
+        //then
+        assertEquals(2, size);
+    }
+
+    @Test(expected = NoSuchUserException.class)
+    public void removeGameFromUserCollectionThatIsNotExist() throws NoSuchUserException, NoSuchGameException {
+        //given
+        //when
+        boardGamesService.removeGameFromUserCollection(5L,1L);
+        //then
+    }
+
+    @Test (expected = NoSuchGameException.class)
+    public void removeGameThatIsNotExistFromUserCollection() throws NoSuchUserException, NoSuchGameException {
+        //given
+        //when
+        boardGamesService.removeGameFromUserCollection(1L,6L);
+        //then
+    }
+
 }
