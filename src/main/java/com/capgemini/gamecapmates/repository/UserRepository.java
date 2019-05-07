@@ -1,13 +1,12 @@
 package com.capgemini.gamecapmates.repository;
 
-import com.capgemini.gamecapmates.Exceptions.NoSuchGameException;
+
 import com.capgemini.gamecapmates.Exceptions.NoSuchUserException;
 import com.capgemini.gamecapmates.dao.Dao;
 import com.capgemini.gamecapmates.domain.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
-import java.util.function.Predicate;
 
 import static java.lang.Math.toIntExact;
 
@@ -76,7 +75,7 @@ public class UserRepository implements Dao<User> {
         if (id != null) {
             return userList.stream()
                     .filter(user -> id.equals(user.getId()))
-                    .findAny().orElseThrow(()->new NoSuchUserException());
+                    .findAny().orElseThrow(() -> new NoSuchUserException());
         }
         throw new NoSuchUserException();
     }
@@ -105,7 +104,7 @@ public class UserRepository implements Dao<User> {
         return (long) userList.indexOf(user);
     }
 
-    public void clear(){
+    public void clear() {
         userList.clear();
     }
 }

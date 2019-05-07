@@ -10,8 +10,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
+import static java.lang.Math.toIntExact;
 
 @Repository
 public class AvailabilityRepository implements Dao<Availability> {
@@ -27,7 +28,7 @@ public class AvailabilityRepository implements Dao<Availability> {
                 .dateTo(LocalDateTime.of(2019, 4, 29, 15, 0))
                 .disponibility(Disponibility.AVAILABLE)
                 .information("Battleground?")
-        .build());
+                .build());
         availabilityList.add(Availability.builder()
                 .id(2L)
                 .dateFrom(LocalDateTime.of(2019, 2, 1, 12, 0))
@@ -78,7 +79,7 @@ public class AvailabilityRepository implements Dao<Availability> {
     @Override
     public Availability edit(Availability availability) throws NoSuchUserException {
         if (availability.getId() <= availabilityList.size()) {
-            int index = getIndex(availability.getId());
+            int index = toIntExact(getIndex(availability.getId()));
             availabilityList.set(index, availability);
             return availability;
         }
@@ -86,13 +87,14 @@ public class AvailabilityRepository implements Dao<Availability> {
     }
 
 
-    private int getIndex(Long id) {
+    private Long getIndex(Long id) {
         Availability availability = availabilityList.stream()
                 .filter(av -> av.getId().equals(id))
                 .findAny().orElse(null);
 
-        return availabilityList.indexOf(availability);
+        return (long)availabilityList.indexOf(availability);
     }
+
 
     @Override
     public void clear() {

@@ -231,7 +231,7 @@ public class BasicUserInformationServiceTest {
                 .gameWin(1)
                 .gameLose(1)
                 .gameDraw(0)
-                .rankingPosition(-1L) //ada method
+                .rankingPosition(1L) //ada method
                 .build();
 
         //when

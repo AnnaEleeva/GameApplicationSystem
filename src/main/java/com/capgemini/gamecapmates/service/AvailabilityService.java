@@ -37,9 +37,10 @@ public class AvailabilityService {
      *
      * @param userId add new availability to user
      */
-    public List<AvailabilityDto> getAvailabilityForUser(Long userId) {
+    public List<AvailabilityDto> getAvailabilityForUser(Long userId) throws NoSuchUserException {
+        List<Long> userAvailabilityID= userRepository.findById(userId).getUserAvailabilityHours();
         List<Availability> availabilityList = availabilityRepository.findAll().stream()
-                .filter(availability -> availability.getId().equals(userId))
+                .filter(availability -> userAvailabilityID.contains(availability.getId())) // contains
                 .collect(Collectors.toList());
         return availabilityMapper.mapListToDto(availabilityList);
     }
@@ -93,8 +94,8 @@ public class AvailabilityService {
         availabilityValidator.checkIfAvailabilityIsNotNull(availabilityDto);
 
         Availability availability = availabilityMapper.mapDtoToEntity(availabilityDto);
-        availabilityRepository.edit(availability);
-        return availabilityDto;
+        Availability availability1=availabilityRepository.edit(availability);
+        return availabilityMapper.mapEntityToDto(availability1);
     }
 
     /**

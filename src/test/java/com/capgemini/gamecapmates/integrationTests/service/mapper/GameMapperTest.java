@@ -3,7 +3,6 @@ package com.capgemini.gamecapmates.integrationTests.service.mapper;
 import com.capgemini.gamecapmates.Exceptions.NoSuchGameException;
 import com.capgemini.gamecapmates.GameCapMatesBoardApplication;
 import com.capgemini.gamecapmates.domain.Game;
-import com.capgemini.gamecapmates.domain.User;
 import com.capgemini.gamecapmates.dto.GameDto;
 import com.capgemini.gamecapmates.enums.Category;
 import com.capgemini.gamecapmates.mapper.GameMapper;

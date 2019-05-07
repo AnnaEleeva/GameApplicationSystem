@@ -3,7 +3,6 @@ package com.capgemini.gamecapmates.repository;
 import com.capgemini.gamecapmates.Exceptions.NoSuchGameException;
 import com.capgemini.gamecapmates.Exceptions.NoSuchUserException;
 import com.capgemini.gamecapmates.dao.Dao;
-import com.capgemini.gamecapmates.domain.Availability;
 import com.capgemini.gamecapmates.domain.Game;
 import com.capgemini.gamecapmates.enums.Category;
 import org.springframework.stereotype.Repository;
@@ -12,7 +11,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static java.lang.Math.toIntExact;
