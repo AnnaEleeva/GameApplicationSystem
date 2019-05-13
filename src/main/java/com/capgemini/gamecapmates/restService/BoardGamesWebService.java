@@ -5,11 +5,12 @@ import com.capgemini.gamecapmates.dto.GameDto;
 import com.capgemini.gamecapmates.mapper.GameMapper;
 import com.capgemini.gamecapmates.repository.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-
+@Service
 public class BoardGamesWebService {
 
     private GameRepository gameRepository;

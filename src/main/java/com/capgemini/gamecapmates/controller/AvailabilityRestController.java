@@ -23,15 +23,6 @@ public class AvailabilityRestController {
         this.availabilityWebService= availabilityWebService;
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<List<AvailabilityDto>> findAllAvailability(@PathVariable("id") Long id) throws Exception {
-        if (id < 0) {
-            return ResponseEntity.badRequest().body(null);
-        }
-        List<AvailabilityDto> allBooks = availabilityService.getAvailabilityForUser(id);
-        return ResponseEntity.ok().body(allBooks);
-    }
-
     @PostMapping("/edit")
     public ResponseEntity<AvailabilityDto> editAvailabilityHours(@RequestBody AvailabilityDto availabilityDto) throws Exception {
         AvailabilityDto availabilityDto1=availabilityService.editAvailabilityHours(availabilityDto);
@@ -48,7 +39,7 @@ public class AvailabilityRestController {
     }
 
     @PostMapping(value = "/search")
-    public ResponseEntity<List<AvailabilityDto>> searchForUser(@RequestBody AvailabilityDto availabilityDto) throws Exception{
+    public ResponseEntity<List<AvailabilityDto>> searchForAvailability(@RequestBody AvailabilityDto availabilityDto) throws Exception{
         List<AvailabilityDto> availabilityDtos= availabilityWebService.findAvailabilityAfterParam(availabilityDto);
         return ResponseEntity.ok().body(availabilityDtos);
     }
