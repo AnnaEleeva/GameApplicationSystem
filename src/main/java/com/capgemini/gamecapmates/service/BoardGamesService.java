@@ -45,22 +45,24 @@ public class BoardGamesService {
         return gameMapper.mapListToDto(games);
     }
 
-    public GameDto getGameById(Long gameId) throws NoSuchGameException{
+    public GameDto getGameById(Long gameId) throws NoSuchGameException {
         gamesValidator.checkIfUserGameIdIsNull(gameId);
-        if(gameRepository.findAll().contains(gameRepository.findById(gameId))) {
+        if (gameRepository.findAll().contains(gameRepository.findById(gameId))) {
             Game game = gameRepository.findById(gameId);
             return gameMapper.mapEntityToDto(game);
         }
         throw new NoSuchGameException();
     }
+
     /**
      * Gets all collection of Games belongs to user
+     *
      * @param userId
      * @return all Games belongs to user by id
-     * */
+     */
     public List<GameDto> getUserGamesCollection(Long userId) throws NoSuchUserException {
         userValidator.checkIfUserIdIsNull(userId);
-        if(userRepository.findAll().contains(userRepository.findById(userId))) {
+        if (userRepository.findAll().contains(userRepository.findById(userId))) {
             List<Long> userGamesId = userRepository.findById(userId).getUserGames();
             List<Game> games = gameRepository.findAll();
             List<Game> userGames = games.stream()
@@ -70,13 +72,15 @@ public class BoardGamesService {
         }
         throw new NoSuchUserException();
     }
+
     /**
-     *Remove Game by Id from user collection
+     * Remove Game by Id from user collection
+     *
      * @param userId,
      * @param gameId
      * @throws NoSuchGameException if game object is not null or is not exists in system collection',
      * @throws NoSuchUserException if user object is not null or is not exists in system collection'
-     * */
+     */
     public void removeGameFromUserCollection(Long userId, Long gameId) throws NoSuchUserException, NoSuchGameException {
         userValidator.checkIfUserIdIsNull(userId);
         gamesValidator.checkIfUserGameIdIsNull(gameId);
@@ -92,41 +96,38 @@ public class BoardGamesService {
 
     /**
      * Add Game to User collection that is already exists in system Collection
+     *
      * @param userId,
      * @param gameId
      * @throws NoSuchGameException if game object is null,
      * @throws NoSuchUserException if user object is not exists in system collection or is not null
-     * */
+     */
     public void addGameAlreadyExistsToUser(Long userId, Long gameId) throws NoSuchUserException, NoSuchGameException {
-        userValidator.checkIfUserIdIsNull(userId);
-        gamesValidator.checkIfUserGameIdIsNull(gameId);
-
-        User user = userRepository.findById(userId);
-        GameDto game= getGameById(gameId);
-        List<Long> gameDtos= user.getUserGames();
-        if(!gameDtos.add(game.getId())){
-            throw new NoSuchGameException();
-        }
-        user.setUserGames(gameDtos);
+        if (gameRepository.findAll().contains(gameRepository.findById(gameId)))
+            if (userRepository.findAll().contains(userRepository.findById(userId))) {
+                User user = userRepository.findById(userId);
+                Game newGame = gameRepository.findById(gameId);
+                user.getUserGames().add(newGame.getId());
+            }
     }
+
     /**
      * Add Game to User Collection games with adding new Game to system Collection.
      * Only user can add game
-     * @param  gameDto search for game object and check if exists
+     *
+     * @param gameDto search for game object and check if exists
      * @throws NoSuchGameException if game object is not exists in system collection or is not null,
      * @throws NoSuchUserException if user object is not exists in system collection or is not null
-     *
-     * */
+     */
     public void addGameThatIsNotExistsToCollection(Long userId, GameDto gameDto) throws NoSuchGameException, NoSuchUserException {
-        userValidator.checkIfUserIdIsNull(userId);
-        gamesValidator.checkIfUserGameDtoNull(gameDto);
-
-        List<Game> gameList= gameRepository.findAll();
-        if(!gameList.contains(gameDto)){
-            gameRepository.add(gameMapper.mapDtoToEntity(gameDto));
-        }else{
-            throw new NoSuchGameException();
-        }
-        addGameAlreadyExistsToUser(userId,gameDto.getId());
+        Game game = gameMapper.mapDtoToEntity(gameDto);
+        if (userRepository.findAll().contains(userRepository.findById(userId)))
+            if (!gameRepository.findAll().contains(game)) {
+                Game newGame = gameMapper.mapDtoToEntity(gameDto);
+                gameRepository.add(newGame);
+            } else {
+                throw new NoSuchGameException();
+            }
+        addGameAlreadyExistsToUser(userId, gameDto.getId());
     }
 }

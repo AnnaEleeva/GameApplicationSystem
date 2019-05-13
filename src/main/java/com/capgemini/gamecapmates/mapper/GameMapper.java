@@ -16,8 +16,8 @@ public class GameMapper {
     @Autowired
     private GamesValidator gamesValidator;
 
-    public Game mapDtoToEntity (GameDto gameDto) throws NoSuchGameException {
-        gamesValidator.checkIfUserGameDtoNull(gameDto);
+    public Game mapDtoToEntity (GameDto gameDto)  {
+
         return Game.builder()
                 .id(gameDto.getId())
                 .name(gameDto.getName())
@@ -29,8 +29,8 @@ public class GameMapper {
                 .build();
     }
 
-    public GameDto mapEntityToDto(Game game) throws NoSuchGameException {
-        gamesValidator.checkIfUserGameIsNull(game);
+    public GameDto mapEntityToDto(Game game) {
+
         return GameDto.builder()
                 .id(game.getId())
                 .name(game.getName())

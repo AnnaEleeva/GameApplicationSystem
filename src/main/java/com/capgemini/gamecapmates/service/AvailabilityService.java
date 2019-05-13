@@ -113,4 +113,5 @@ public class AvailabilityService {
         Availability availability = availabilityRepository.edit(availabilityMapper.mapDtoToEntity(availabilityToUpdate));
         return availabilityMapper.mapEntityToDto(availability);
     }
+
 }

@@ -19,8 +19,7 @@ public class UserMapper {
     @Autowired
     private UserValidator userValidator;
 
-    public User mapDtoToEntity(final UserDto userDto) throws NoSuchUserException {
-        userValidator.checkIfUserDtoIsNull(userDto);
+    public User mapDtoToEntity(final UserDto userDto)  {
             return User.builder()
                     .id(userDto.getId())
                     .age(userDto.getAge())
@@ -35,8 +34,8 @@ public class UserMapper {
                     .build();
     }
 
-    public UserDto mapEntityToDto(final User user) throws NoSuchUserException {
-       userValidator.checkIfUserIsNull(user);
+    public UserDto mapEntityToDto(final User user)  {
+
             return UserDto.builder()
                     .id(user.getId())
                     .age(user.getAge())
