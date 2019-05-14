@@ -54,11 +54,8 @@ public class AvailabilityRepository implements Dao<Availability> {
 
     @Override
     public Availability add(Availability availability) {
-        if (availability != null) {
             availabilityList.add(availability);
             return availability;
-        }
-        throw new IllegalArgumentException();
     }
 
     @Override

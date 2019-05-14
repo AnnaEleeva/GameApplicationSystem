@@ -4,10 +4,12 @@ import lombok.*;
 
 import java.util.List;
 
-@AllArgsConstructor
-@Data
+@Getter
+@Setter
 @Builder
 @EqualsAndHashCode
+@AllArgsConstructor
+@ToString
 public class UserDto {
     private Long id;
     private int age;
@@ -20,4 +22,6 @@ public class UserDto {
     private List<Long> userGames;
     private List<Long> userGamesHistory;
     private List<Long> userAvailabilityHours;
+
+    public UserDto(){}
 }

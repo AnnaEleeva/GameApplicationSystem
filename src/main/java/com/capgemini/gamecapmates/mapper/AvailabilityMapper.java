@@ -16,10 +16,7 @@ public class AvailabilityMapper {
     @Autowired
     AvailabilityValidator availabilityValidator;
 
-    public Availability mapDtoToEntity(AvailabilityDto availabilityDto) throws AvailabilityException {
-        availabilityValidator.checkIfAvailabilityIsNotNull(availabilityDto);
-        availabilityValidator.checkIfComponentAvailabilityIsNull(availabilityDto);
-        availabilityValidator.checkIfUserUpdateBirthDateIsSmaller(availabilityDto);
+    public Availability mapDtoToEntity(AvailabilityDto availabilityDto)  {
 
         return Availability.builder()
                 .id(availabilityDto.getId())

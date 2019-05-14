@@ -60,12 +60,9 @@ public class GameRepository implements Dao<Game> {
 
     @Override
     public Game add(Game game)  {
-        if (game != null) {
             gameList.add(game);
 
             return game;
-        }
-        throw new IllegalArgumentException();
     }
 
     @Override

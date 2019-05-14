@@ -39,6 +39,12 @@ public class BasicUserInformationService {
         this.statisticsMapper = statisticsMapper;
         this.userValidator= userValidator;
     }
+
+    public UserDto addUser(UserDto userDto){
+        User user= userMapper.mapDtoToEntity(userDto);
+        return userMapper.mapEntityToDto(user);
+    }
+
     /**
      *display user data with specific basic information
      * @param userDto object of user to display

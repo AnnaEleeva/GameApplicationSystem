@@ -45,9 +45,13 @@ public class BoardGamesService {
         return gameMapper.mapListToDto(games);
     }
 
+    public GameDto addGame(GameDto gameDto){
+        Game game= gameMapper.mapDtoToEntity(gameDto);
+      return  gameMapper.mapEntityToDto(gameRepository.add(game));
+    }
+
     public GameDto getGameById(Long gameId) throws NoSuchGameException {
-        gamesValidator.checkIfUserGameIdIsNull(gameId);
-        if (gameRepository.findAll().contains(gameRepository.findById(gameId))) {
+        if (!(gameRepository.findById(gameId) ==null)) {
             Game game = gameRepository.findById(gameId);
             return gameMapper.mapEntityToDto(game);
         }

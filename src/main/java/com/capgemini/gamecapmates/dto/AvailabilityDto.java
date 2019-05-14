@@ -1,17 +1,16 @@
 package com.capgemini.gamecapmates.dto;
 
 import com.capgemini.gamecapmates.enums.Disponibility;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Data
-@AllArgsConstructor
+//@AllArgsConstructor
+@Getter
+@Setter
 @Builder
 @EqualsAndHashCode
+@ToString
 public class AvailabilityDto {
 
     private Long id;
@@ -19,4 +18,14 @@ public class AvailabilityDto {
     private LocalDateTime dateTo;
     private Disponibility disponibility;
     private String information;
+
+    public AvailabilityDto (){}
+
+   public AvailabilityDto(Long id,LocalDateTime dateFrom, LocalDateTime dateTo, Disponibility disponibility, String information){
+        this.id=id;
+        this.dateFrom=dateFrom;
+        this.dateTo= dateTo;
+        this.disponibility=disponibility;
+        this.information=information;
+    }
 }

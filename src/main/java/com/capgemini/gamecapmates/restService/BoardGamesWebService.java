@@ -22,7 +22,7 @@ public class BoardGamesWebService {
         this.gameRepository = gameRepository;
     }
 
-    public List<GameDto> searchUser(GameDto gameDto) {
+    public List<GameDto> searchGame(GameDto gameDto) {
         List<Game> allGames = gameRepository.findAll();
         List<GameDto> allGamesDto = allGames.stream()
                 .map(entity -> gameMapper.mapEntityToDto(entity))

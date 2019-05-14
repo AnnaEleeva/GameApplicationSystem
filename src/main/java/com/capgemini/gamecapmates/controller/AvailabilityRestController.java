@@ -5,45 +5,36 @@ import com.capgemini.gamecapmates.dto.UserDto;
 import com.capgemini.gamecapmates.restService.AvailabilityWebService;
 import com.capgemini.gamecapmates.service.AvailabilityService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/availability")
+@RequestMapping("/api/availabilities")
 public class AvailabilityRestController {
 
     private AvailabilityService availabilityService;
-    private AvailabilityWebService availabilityWebService;
 
     @Autowired
-    public AvailabilityRestController(AvailabilityService availabilityService, AvailabilityWebService availabilityWebService) {
+    public AvailabilityRestController(AvailabilityService availabilityService) {
         this.availabilityService = availabilityService;
-        this.availabilityWebService= availabilityWebService;
     }
 
-    @PostMapping("/edit")
-    public ResponseEntity<AvailabilityDto> editAvailabilityHours(@RequestBody AvailabilityDto availabilityDto) throws Exception {
-        AvailabilityDto availabilityDto1=availabilityService.editAvailabilityHours(availabilityDto);
-        return ResponseEntity.ok().body(availabilityDto1);
-    }
-
-    @GetMapping("/user/{id}")
-   public ResponseEntity<List<AvailabilityDto>> getAvailabilityForUser(@PathVariable ("id") Long id) throws Exception{
+    @GetMapping("/availability/{id}")
+    public ResponseEntity<List<AvailabilityDto>> getAvailabilityForUser(@PathVariable("id") Long id) throws Exception {
         if (id < 0) {
             return ResponseEntity.badRequest().body(null);
         }
-        List<AvailabilityDto> availabilityDtos=availabilityService.getAvailabilityForUser(id);
+        List<AvailabilityDto> availabilityDtos = availabilityService.getAvailabilityForUser(id);
         return ResponseEntity.ok().body(availabilityDtos);
     }
 
-    @PostMapping(value = "/search")
-    public ResponseEntity<List<AvailabilityDto>> searchForAvailability(@RequestBody AvailabilityDto availabilityDto) throws Exception{
-        List<AvailabilityDto> availabilityDtos= availabilityWebService.findAvailabilityAfterParam(availabilityDto);
-        return ResponseEntity.ok().body(availabilityDtos);
+    @PostMapping(value= "/addAvailability", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<AvailabilityDto> addAvailability(@RequestBody AvailabilityDto availabilityDto) throws Exception {
+        AvailabilityDto availability = availabilityService.addAvailability(availabilityDto);
+        return ResponseEntity.ok().body(availability);
     }
-
-    //400, 404 - response entity, odpowiedni status dodac ,sensowne wyjasnienie
 
 }

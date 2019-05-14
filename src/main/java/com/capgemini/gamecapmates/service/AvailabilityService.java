@@ -32,6 +32,11 @@ public class AvailabilityService {
         this.availabilityValidator = availabilityValidator;
     }
 
+    public AvailabilityDto addAvailability(AvailabilityDto availabilityDto) {
+        Availability availability = availabilityMapper.mapDtoToEntity(availabilityDto);
+        return availabilityMapper.mapEntityToDto(availability);
+    }
+
     /**
      * Get all availability belongs to user
      *

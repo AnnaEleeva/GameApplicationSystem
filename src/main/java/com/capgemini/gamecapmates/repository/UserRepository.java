@@ -63,11 +63,8 @@ public class UserRepository implements Dao<User> {
 
     @Override
     public User add(User user) {
-        if (user != null && !userList.contains(user)) {
             userList.add(user);
             return user;
-        }
-        return null;
     }
 
     @Override

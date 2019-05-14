@@ -4,11 +4,12 @@ import com.capgemini.gamecapmates.enums.Category;
 import lombok.*;
 
 import java.time.LocalDate;
-
-@AllArgsConstructor
-@Data
+@Getter
+@Setter
 @Builder
 @EqualsAndHashCode
+@AllArgsConstructor
+@ToString
 public class GameDto {
     public Long id;
     private String name;
@@ -17,4 +18,6 @@ public class GameDto {
     private int maxNumberOfplayers;
     private Category category;
     private String description;
+
+    public GameDto(){}
 }
