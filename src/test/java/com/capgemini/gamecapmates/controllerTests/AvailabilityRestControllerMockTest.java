@@ -54,6 +54,7 @@ public class AvailabilityRestControllerMockTest {
     @Before
     public void setup(){
         mockMvc= MockMvcBuilders.standaloneSetup(availabilityRestController).build();
+        availabilityDtos= generateList();
     }
 
     @Test
@@ -84,5 +85,26 @@ public class AvailabilityRestControllerMockTest {
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
+    }
+
+    private List<AvailabilityDto> generateList() {
+        List<AvailabilityDto> availabilityList = new ArrayList<>();
+
+        availabilityList.add(AvailabilityDto.builder()
+                .id(3L)
+                .dateFrom(LocalDateTime.of(2019, 4, 29, 12, 0))
+                .dateTo(LocalDateTime.of(2019, 4, 29, 15, 0))
+                .disponibility(Disponibility.AVAILABLE)
+                .information("Battleground?")
+                .build());
+        availabilityList.add(AvailabilityDto.builder()
+                .id(4L)
+                .dateFrom(LocalDateTime.of(2019, 2, 1, 12, 0))
+                .dateTo(LocalDateTime.of(2019, 2, 1, 14, 0))
+                .disponibility(Disponibility.BUSY)
+                .information("Playing new Game on steam")
+                .build());
+
+        return availabilityList;
     }
 }

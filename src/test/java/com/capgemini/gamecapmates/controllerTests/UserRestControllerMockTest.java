@@ -31,15 +31,11 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 public class UserRestControllerMockTest {
-
-    @Mock
-    private ObjectMapper objectMapper;
 
     private MockMvc mockMvc;
     @Mock
@@ -58,8 +54,6 @@ public class UserRestControllerMockTest {
 
     @Test
     public void shouldGetUserFromCollection() throws Exception{
-        //given
-        //when
         //given
         //when
         when(basicUserInformationService.findUserById(any(Long.class))).thenReturn(listuserDtos.get(0));

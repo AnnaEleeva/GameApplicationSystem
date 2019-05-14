@@ -10,14 +10,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
 public class ControllerException {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ControllerException.class);
-
+    /**
+     *          Method which handles {@link com.capgemini.gamecapmates.Exceptions.BusinessException} and
+     *          {@link com.capgemini.gamecapmates.Exceptions.AvailabilityException} and
+     *          {@link com.capgemini.gamecapmates.Exceptions.NoSuchGameException} and
+     *          {@link com.capgemini.gamecapmates.Exceptions.NoSuchUserException}
+     *
+     * @return
+     *          Error object with information about thrown exception
+     */
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<Object> businessExceptionHandler() {
         LOGGER.error("Error occured");
